@@ -1,6 +1,5 @@
 # Welcome to MkDocs
 
-hello mkdocs
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
 ## Commands
@@ -9,6 +8,16 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 * `mkdocs serve` - Start the live-reloading docs server.
 * `mkdocs build` - Build the documentation site.
 * `mkdocs -h` - Print help message and exit.
+
+<div class="termy">
+```console
+$ show progress
+---> 100%
+Done!
+```
+</div>
+:smile: 
+
 
 ## Project layout
 
