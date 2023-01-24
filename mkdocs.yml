@@ -41,9 +41,6 @@ plugins:
   - search:
       lang: en
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
-  - minify:
-      minify_html: true
-
 
 markdown_extensions:
 
