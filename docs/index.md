@@ -1,6 +1,6 @@
 # Welcome to MkDocs
 
-hello test
+hello mkdocs
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
 ## Commands
