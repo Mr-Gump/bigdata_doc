@@ -1,7 +1,3 @@
----
-icon: material/code-json
----
-
 # Code blocks
 
 Code blocks and examples are an essential part of technical project

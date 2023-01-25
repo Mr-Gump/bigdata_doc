@@ -1,7 +1,3 @@
----
-icon: material/format-font
----
-
 # Formatting
 
 Material for MkDocs provides support for several HTML elements that can be used 

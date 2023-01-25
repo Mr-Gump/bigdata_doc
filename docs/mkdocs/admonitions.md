@@ -1,7 +1,3 @@
----
-icon: material/alert-outline
----
-
 # Admonitions
 
 Admonitions, also known as _call-outs_, are an excellent choice for including

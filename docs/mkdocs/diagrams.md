@@ -1,7 +1,3 @@
----
-icon: material/graph-outline
----
-
 # Diagrams
 
 Diagrams help to communicate complex relationships and interconnections between

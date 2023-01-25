@@ -1,7 +1,3 @@
----
-icon: material/image-frame
----
-
 # Images
 
 While images are first-class citizens of Markdown and part of the core syntax, 

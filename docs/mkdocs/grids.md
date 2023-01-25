@@ -1,7 +1,3 @@
----
-icon: material/view-grid-plus
----
-
 # Grids
 
 Material for MkDocs makes it easy to arrange sections into grids, grouping

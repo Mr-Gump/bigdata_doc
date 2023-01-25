@@ -1,7 +1,3 @@
----
-icon: material/button-cursor
----
-
 # Buttons
 
 Material for MkDocs provides dedicated styles for primary and secondary buttons

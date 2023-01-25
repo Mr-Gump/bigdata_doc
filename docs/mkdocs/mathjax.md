@@ -1,7 +1,3 @@
----
-icon: material/alphabet-greek
----
-
 # MathJax
 
 [MathJax] is a beautiful and accessible way to display mathematical content

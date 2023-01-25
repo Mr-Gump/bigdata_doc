@@ -1,7 +1,3 @@
----
-icon: material/format-align-bottom
----
-
 # Footnotes
 
 Footnotes are a great way to add supplemental or additional information to a

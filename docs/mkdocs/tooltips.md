@@ -1,8 +1,3 @@
----
-icon: material/tooltip-plus
-status: new
----
-
 # Tooltips
 
 Technical documentation often incurs the usage of many acronyms, which may

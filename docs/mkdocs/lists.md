@@ -1,7 +1,3 @@
----
-icon: material/format-list-bulleted
----
-
 # Lists
 
 Material for MkDocs supports several flavors of lists that cater to different

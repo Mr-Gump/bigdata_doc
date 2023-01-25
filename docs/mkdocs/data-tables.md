@@ -1,7 +1,3 @@
----
-icon: material/table-edit
----
-
 # Data tables
 
 Material for MkDocs defines default styles for data tables – an excellent way
