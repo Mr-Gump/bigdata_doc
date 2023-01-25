@@ -5,19 +5,32 @@ site_author: Mr. Gump
 
 theme:
   name: material
+  custom_dir: .overrides
   icon:
     logo: material/database-outline
     repo: fontawesome/brands/git-alt 
   features:
+    # - announce.dismiss
+    - content.code.annotate
+    - content.code.copy
+    # - content.tabs.link
+    - content.tooltips
+    # - header.autohide
+    # - navigation.expand
+    - navigation.footer
+    - navigation.indexes
     - navigation.instant
-    - navigation.tracking
+    # - navigation.prune
     - navigation.sections
-    - toc.follow
+    - navigation.tabs
+    # - navigation.tabs.sticky
     - navigation.top
-    - search.suggest
+    - navigation.tracking
     - search.highlight
     - search.share
-    - header.autohide
+    - search.suggest
+    - toc.follow
+    # - toc.integrate
   palette:
   # Palette toggle for light mode
   - media: "(prefers-color-scheme: light)"
@@ -86,3 +99,49 @@ extra_css:
 extra_javascript:
 - js/termynal.js
 - js/custom.js
+
+# Page tree
+nav:
+  - Material for MkDocs: 
+    - Home: index.md
+    - 提示: mkdocs/admonitions.md
+    - 按钮: mkdocs/buttons.md
+    - 代码块: mkdocs/code-blocks.md
+    - 内容标签页: mkdocs/content-tabs.md
+    - 数据表格: mkdocs/data-tables.md
+    - 图表: mkdocs/diagrams.md
+    - 角注: mkdocs/footnotes.md
+    - 格式: mkdocs/formatting.md
+    - 网格: mkdocs/grids.md
+    - 图标, 表情: mkdocs/icons-emojis.md
+    - 图像: mkdocs/images.md
+    - 列表: mkdocs/lists.md
+    - 工具提示: mkdocs/tooltips.md
+    - MathJax: mkdocs/mathjax.md
+    - Termynal: mkdocs/termynal.md
+  - Linux: linux/index.md
+  - Hadoop: hadoop.md
+  - Hive: hive.md
+  - Kafka: kafka.md
+  - Spark: spark/index.md
+  - Flink: flink/index.md
+  - 版本控制工具: 
+    - 版本控制工具: vcs/index.md
+    - Maven: vcs/maven.md
+    - Git: vcs/git.md
+  - 数据采集工具: 
+    - 数据采集工具: sync/index.md
+    - DataX: sync/datax.md
+    - MaxWell: sync/maxwell.md
+    - Flume: sync/flume.md
+  - 调度工具:
+    - 调度工具: schedule/index.md
+    - Dophin Scheduler: schedule/ds.md
+  - 数据库:
+    - 数据库: db/index.md
+    - Redis: db/redis.md
+    - Clickhouse: db/clickhouse.md
+  - 容器化:
+    - 容器化: container/index.md
+    - docker: container/docker.md
+    - kubernetes: container/k8s.md

@@ -1,6 +1,4 @@
-# Welcome to MkDocs
-
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+# Welcome to Mr. Gump's BigData Doc
 
 ## Commands
 
@@ -17,6 +15,9 @@ Done!
 ```
 </div>
 :smile: 
+[Subscribe to our newsletter](#){ .md-button }
+![Image title](https://dummyimage.com/600x400/eee/aaa){ align=left }
+[Hover me](https://example.com "I'm a tooltip!")
 
 
 ## Project layout
