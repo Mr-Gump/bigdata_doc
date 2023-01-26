@@ -1,29 +1,17 @@
 # 图像
 
-While images are first-class citizens of Markdown and part of the core syntax, 
-it can be difficult to work with them. Material for MkDocs makes working with 
-images more comfortable, providing styles for image alignment and image
-captions.
+由于图像是 Markdown 的一等公民也是核心语法的一部分，处理它们可能比较困难。
+Material for MkDocs 让处理图像更加轻松，通过提供不同风格的图像样式和图像那个说明。
 
 ## 配置
 
-This configuration adds the ability to align images, add captions to images
-(rendering them as figures), and mark large images for lazy-loading. Add the
-following lines to `mkdocs.yml`:
+请添加下面几行到 `mkdocs.yml` 以支持将图片转换为数字并为大图片开启懒加载:
 
 ``` yaml
 markdown_extensions:
   - attr_list
   - md_in_html
 ```
-
-See additional configuration options:
-
-- [Attribute Lists]
-- [Markdown in HTML]
-
-  [Attribute Lists]: ../setup/extensions/python-markdown.md#attribute-lists
-  [Markdown in HTML]: ../setup/extensions/python-markdown.md#markdown-in-html
 
 ### Lightbox
 
@@ -44,19 +32,11 @@ plugins:
   - glightbox
 ```
 
-We recommend checking out the available
-[configuration options][glightbox options].
-
-  [Lightbox support]: https://github.com/squidfunk/mkdocs-material/releases/tag/0.1.0
-  [glightbox]: https://github.com/blueswen/mkdocs-glightbox
-  [glightbox options]: https://github.com/blueswen/mkdocs-glightbox#usage
-
 ## 使用
 
 ### 图像对齐
 
-When [Attribute Lists] is enabled, images can be aligned by adding the
-respective alignment directions via the `align` attribute, i.e. `align=left` or
+当 [Attribute Lists] 被启用，图像可以通过 `align` 属性添加对齐方向 ，例如 `align=left` 或
 `align=right`:
 
 === "Left"
@@ -113,11 +93,9 @@ will stretch to the full width of the viewport, e.g. on mobile viewports.
 
 ### 图像说明
 
-Sadly, the Markdown syntax doesn't provide native support for image captions,
-but it's always possible to use the [Markdown in HTML] extension with literal
-`figure` and `figcaption` tags:
+令人失望的是，MarkDown 语法并不原生支持图像说明，但是使用 [Markdown in HTML] 插件的 `figure` 和 `figcaption` 标签使添加图像说明变为可能:
 
-``` html title="Image with caption"
+``` html title="带说明的图像"
 <figure markdown>
   ![Image title](https://dummyimage.com/600x400/){ width="300" }
   <figcaption>Image caption</figcaption>
@@ -133,9 +111,8 @@ but it's always possible to use the [Markdown in HTML] extension with literal
 
 ### 图像懒加载
 
-Modern browsers provide [native support for lazy-loading images][lazy-loading]
-through the `loading=lazy` directive, which degrades to eager-loading in
-browsers without support:
+现代浏览器提供对懒加载图像的原生支持 [lazy-loading]
+通过 `loading=lazy` 标签，对于不支持懒加载的浏览器会降级为直接加载:
 
 ``` markdown title="Image, lazy-loaded"
 ![Image title](https://dummyimage.com/600x400/){ loading=lazy }
@@ -146,28 +123,3 @@ browsers without support:
 </div>
 
   [lazy-loading]: https://caniuse.com/#feat=loading-lazy-attr
-
-### 亮/暗模式
-
-[:octicons-tag-24: 8.1.1][Light and dark mode support]
-
-If you added a [color palette toggle] and want to show different images for
-light and dark color schemes, you can append a `#only-light` or `#only-dark`
-hash fragment to the image URL:
-
-``` markdown title="Image, different for light and dark mode"
-![Image title](https://dummyimage.com/600x400/f5f5f5/aaaaaa#only-light)
-![Image title](https://dummyimage.com/600x400/21222c/d5d7e2#only-dark)
-```
-
-<div class="result" markdown>
-
-![Zelda light world]{ width="300" }
-![Zelda dark world]{ width="300" }
-
-</div>
-
-  [Light and dark mode support]: https://github.com/squidfunk/mkdocs-material/releases/tag/8.1.1
-  [color palette toggle]: ../setup/changing-the-colors.md#color-palette-toggle
-  [Zelda light world]: ../assets/images/zelda-light-world.png#only-light
-  [Zelda dark world]: ../assets/images/zelda-dark-world.png#only-dark

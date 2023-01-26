@@ -18,14 +18,6 @@ markdown_extensions:
       alternate_style: true 
 ```
 
-See additional configuration options:
-
-- [SuperFences]
-- [Tabbed]
-
-  [SuperFences]: ../setup/extensions/python-markdown-extensions.md#superfences
-  [Tabbed]: ../setup/extensions/python-markdown-extensions.md#tabbed
-
 ### 连接内容标签页
 
 [:octicons-tag-24: 8.3.0][Linked content tabs support] ·

@@ -142,8 +142,7 @@ theme:
 
 #### 删除注释
 
-If you wish to strip the comment characters surrounding a code annotation,
-simply add an `!` after the closing parenthesis of the code annotation:
+如果你想删除围绕着代码标记的注释自负，只需要在它后面加一个 `!` :
 
 ```` markdown title="Code block with annotation, stripped"
 ``` yaml
@@ -171,10 +170,7 @@ stripped for technical reasons.
 
 ### 添加行号
 
-Line numbers can be added to a code block by using the `linenums="<start>"`
-option directly after the shortcode, whereas `<start>` represents the starting
-line number. A code block can start from a line number other than `1`, which
-allows to split large code blocks for readability:
+可以在语言码后使用 `linenums="<start>"` 选项，`<start>` 代表起始行号。 一个代码块可以使用 `1` 以外的起始行号，这通常被用来切分大代码块以增加可读性:
 
 ```` markdown title="带行号代码块"
 ``` py linenums="1"

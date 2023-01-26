@@ -5,8 +5,7 @@ of rendering tabular data in project documentation. Furthermore, customizations
 like [sortable tables] can be achieved with a third-party library and some
 [additional JavaScript].
 
-  [sortable tables]: #sortable-tables
-  [additional JavaScript]: ../customization.md#additional-javascript 
+
 
 ## 配置
 
@@ -17,12 +16,6 @@ enabled by default, but to be sure, add the following lines to `mkdocs.yml`:
 markdown_extensions:
   - tables
 ```
-
-See additional configuration options:
-
-- [Tables]
-
-  [Tables]: ../setup/extensions/python-markdown.md#tables
 
 ## 使用
 

@@ -124,7 +124,8 @@ nav:
     - 工具提示: mkdocs/tooltips.md
     - MathJax: mkdocs/mathjax.md
     - Termynal: mkdocs/termynal.md
-  - Linux: linux/index.md
+  - Linux: linux.md
+  - Scala: scala.md
   - Hadoop: hadoop.md
   - Hive: hive.md
   - Kafka: kafka.md
