@@ -15,9 +15,6 @@ markdown_extensions:
 
 ### Lightbox
 
-[:octicons-tag-24: 0.1.0][Lightbox support] ·
-[:octicons-cpu-24: Plugin][glightbox]
-
 如果你想为你的文档添加图像缩放的功能, 
 [glightbox] 插件是一个很好的选择,因为它和 Material for MkDocs 集成得很好。使用 `pip` 安装它:
 

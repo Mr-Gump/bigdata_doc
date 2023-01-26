@@ -1,9 +1,6 @@
 # 内容标签页
 
-Sometimes, it's desirable to group alternative content under different tabs,
-e.g. when describing how to access an API from different languages or
-environments. Material for MkDocs allows for beautiful and functional tabs,
-grouping code blocks and other content.
+有时，很需要在不同的标签页下组织不同的内容，例如当描述如何使用不同的语言或环境访问一个 API，Material for MkDocs 允许使用漂亮的功能性标签来组织代码块或其他内容。 
 
 ## 配置
 
