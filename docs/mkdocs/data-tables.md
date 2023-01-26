@@ -1,16 +1,10 @@
 # 数据表格
 
-Material for MkDocs defines default styles for data tables – an excellent way
-of rendering tabular data in project documentation. Furthermore, customizations
-like [sortable tables] can be achieved with a third-party library and some
-[additional JavaScript].
-
-
+Material for MkDocs 为数据表格定义了默认风格 – 一个极好的渲染项目文档中表格式数据的方式。
 
 ## 配置
 
-This configuration enables Markdown table support, which should normally be
-enabled by default, but to be sure, add the following lines to `mkdocs.yml`:
+请添加下面几行到 `mkdocs.yml`:
 
 ``` yaml
 markdown_extensions:
@@ -19,11 +13,9 @@ markdown_extensions:
 
 ## 使用
 
-Data tables can be used at any position in your project documentation and can
-contain arbitrary Markdown, including inline code blocks, as well as [icons and
-emojis]:
+数据表格可以在你的项目文档中的任何地方，并且可以包含嵌套 Markdown，包括行内代码块和表情图标:
 
-``` markdown title="Data table"
+``` markdown title="数据表格"
 | Method      | Description                          |
 | ----------- | ------------------------------------ |
 | `GET`       | :material-check:     Fetch resource  |
@@ -41,13 +33,9 @@ emojis]:
 
 </div>
 
-  [icons and emojis]: icons-emojis.md
-
 ### 列对齐
 
-If you want to align a specific column to the `left`, `center` or `right`, you
-can use the [regular Markdown syntax] placing `:` characters at the beginning
-and/or end of the divider.
+如果你想对齐特定列到 `left`, `center` 或 `right`，你可以使用常规的Markdown 语法——在分割线的开头/结尾添加一个 `:` 字符。
 
 === "Left"
 
@@ -108,6 +96,3 @@ and/or end of the divider.
     | `DELETE`    | :material-close:     Delete resource |
 
     </div>
-
-  [regular Markdown syntax]: https://www.markdownguide.org/extended-syntax/#tables
-

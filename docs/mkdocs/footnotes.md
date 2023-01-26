@@ -1,34 +1,21 @@
 # 角注
 
-Footnotes are a great way to add supplemental or additional information to a
-specific word, phrase or sentence without interrupting the flow of a document.
-Material for MkDocs provides the ability to define, reference and render
-footnotes.
+脚注是为特定的单词、短语或句子添加补充或额外信息的好方法，而不会打断文档的流程。Material for MkDocs 提供了定义、引用和渲染脚注的能力。
 
 ## 配置
 
-This configuration adds the ability to define inline footnotes, which are then
-rendered below all Markdown content of a document. Add the following lines to
-`mkdocs.yml`:
+请将下面几行添加到 `mkdocs.yml`:
 
 ``` yaml
 markdown_extensions:
   - footnotes
 ```
 
-See additional configuration options:
-
-- [Footnotes]
-
-  [Footnotes]: ../setup/extensions/python-markdown.md#footnotes
-
 ## 使用
 
 ### 添加角注引用
 
-A footnote reference must be enclosed in square brackets and must start with a
-caret `^`, directly followed by an arbitrary identifier, which is similar to
-the standard Markdown link syntax.
+脚注引用必须括在方括号中，并且必须以符号 `^` 开头，后面直接跟一个任意标识符，这类似于标准 Markdown 链接语法。
 
 ``` title="Text with footnote references"
 Lorem ipsum[^1] dolor sit amet, consectetur adipiscing elit.[^2]
@@ -42,14 +29,11 @@ Lorem ipsum[^1] dolor sit amet, consectetur adipiscing elit.[^2]
 
 ### 添加角注内容
 
-The footnote content must be declared with the same identifier as the reference.
-It can be inserted at an arbitrary position in the document and is always
-rendered at the bottom of the page. Furthermore, a backlink to the footnote
-reference is automatically added.
+脚注内容必须声明为与引用相同的标识符。它可以被插入到文档中的任意位置，并且总是呈现在页面的底部。此外，还会自动添加到脚注引用的反向链接。
 
 #### 在一行上
 
-Short footnotes can be written on the same line:
+短脚注可以写在同一行上:
 
 ``` title="Footnote"
 [^1]: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -65,7 +49,7 @@ Short footnotes can be written on the same line:
 
 #### 在多行上
 
-Paragraphs can be written on the next line and must be indented by four spaces:
+段落可以写在下一行，并且必须缩进四个空格:
 
 ``` title="Footnote"
 [^2]:

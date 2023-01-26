@@ -1,15 +1,10 @@
 # 网格
 
-Material for MkDocs makes it easy to arrange sections into grids, grouping
-blocks that convey similar meaning or are of equal importance. Grids are just
-perfect for building index pages that show a brief overview of a large section
-of your documentation.
+Material for MkDocs 可以很容易地将段落排列到网格中，将传达相似含义或同等重要性的块分组。网格非常适合用于构建索引页面，以显示文档中较大部分的简要概述。
 
 ## 配置
 
-This configuration enables the use of grids, allowing to bring blocks of
-identical or different types into a rectangular shape. Add the following lines
-to `mkdocs.yml`:
+请将下面几行添加到 `mkdocs.yml`:
 
 ``` yaml
 markdown_extensions: 
@@ -19,18 +14,9 @@ markdown_extensions:
 
 ## 使用
 
-Grids come in two flavors: [card grids], which wrap each element in a card that
-levitates on hover, and [generic grids], which allow to arrange arbitrary block
-elements in a rectangular shape.
-
-  [card grids]: #using-card-grids
-  [generic grids]: #using-generic-grids
-
 #### 列表语法
 
-The list syntax is essentially a shortcut for [card grids], and consists of an
-unordered (or ordered) list wrapped by a `div` with both, the `grid` and `cards`
-classes:
+列表语法本质上是 card grids 的快捷方式，由一个无序（或有序）列表组成，该列表由一个同时包含 grid 和 cards 类的div包装：
 
 ``` html title="Card grid"
 <div class="grid cards" markdown>
@@ -54,9 +40,7 @@ classes:
   </div>
 </div>
 
-List elements can contain arbitrary Markdown, as long as the surrounding `div`
-defines the `markdown` attribute. Following is a more complex example, which
-includes icons and links:
+列表元素可以包含任意 Markdown，只要周围的 div 定义了 Markdown 属性。下面是一个更复杂的示例，其中包括图标和链接：
 
 ``` html title="Card grid, complex example"
 <div class="grid cards" markdown>
@@ -136,25 +120,19 @@ includes icons and links:
   </div>
 </div>
 
-If there's insufficient space to render grid items next to each other, the items
-will stretch to the full width of the viewport, e.g. on mobile viewports. If
-there's more space available, grids will render in items of 3 and more, e.g.
-when [hiding both sidebars].
+如果没有足够的空间来渲染彼此相邻的网格项，则这些项将延伸到视口的整个宽度，例如在移动视口上。如果有更多的可用空间，网格将呈现3项或更多项。
 
   [mkdocs-material]: https://pypistats.org/packages/mkdocs-material
   [pip]: ../getting-started.md#with-pip
-  [getting started]: ../getting-started.md
   [reference]: ../reference/index.md
   [customization]: ../customization.md
   [license]: ../license.md
   [GitHub]: https://github.com/squidfunk/mkdocs-material
-  [hiding both sidebars]: ../setup/setting-up-navigation.md#hiding-the-sidebars
+
 
 #### 块语法
 
-The block syntax allows for arranging cards in grids __together with other
-elements__, as explained in the section on [generic grids]. Just add the `card`
-class to any block element inside a `grid`:
+块语法允许将卡片与其他元素一起排列在网格中。只需将 card 类添加到网格中的任何块元素中:
 
 ``` html title="Card grid, blocks"
 <div class="grid" markdown>
@@ -189,85 +167,3 @@ class to any block element inside a `grid`:
 
   </div>
 </div>
-
-While this syntax may seem unnecessarily verbose at first, the previous example
-shows how card grids can now be mixed with other elements that will also stretch
-to the grid.
-
-### 使用通用网格
-
-[:octicons-heart-fill-24:{ .mdx-heart } Sponsors only][Insiders]{ .mdx-insiders } ·
-[:octicons-tag-24: insiders-4.12.0][Insiders] ·
-:octicons-beaker-24: Experimental
-
-Generic grids allow for arranging arbitrary block elements in a grid, including
-[admonitions], [code blocks], [content tabs] and more. Just wrap a set of blocks
-by using a `div` with the `grid` class:
-
-```` html title="Generic grid"
-<div class="grid" markdown>
-
-=== "Unordered list"
-
-    * Sed sagittis eleifend rutrum
-    * Donec vitae suscipit est
-    * Nulla tempor lobortis orci
-
-=== "Ordered list"
-
-    1. Sed sagittis eleifend rutrum
-    2. Donec vitae suscipit est
-    3. Nulla tempor lobortis orci
-
-``` title="Content tabs"
-=== "Unordered list"
-
-    * Sed sagittis eleifend rutrum
-    * Donec vitae suscipit est
-    * Nulla tempor lobortis orci
-
-=== "Ordered list"
-
-    1. Sed sagittis eleifend rutrum
-    2. Donec vitae suscipit est
-    3. Nulla tempor lobortis orci
-```
-
-</div>
-````
-
-<div class="result" markdown>
-  <div class="grid" markdown>
-
-=== "Unordered list"
-
-    * Sed sagittis eleifend rutrum
-    * Donec vitae suscipit est
-    * Nulla tempor lobortis orci
-
-=== "Ordered list"
-
-    1. Sed sagittis eleifend rutrum
-    2. Donec vitae suscipit est
-    3. Nulla tempor lobortis orci
-
-``` title="Content tabs"
-=== "Unordered list"
-
-    * Sed sagittis eleifend rutrum
-    * Donec vitae suscipit est
-    * Nulla tempor lobortis orci
-
-=== "Ordered list"
-
-    1. Sed sagittis eleifend rutrum
-    2. Donec vitae suscipit est
-    3. Nulla tempor lobortis orci
-```
-
-  </div>
-</div>
-
-  [admonitions]: admonitions.md
-  [code blocks]: code-blocks.md
-  [content tabs]: content-tabs.md

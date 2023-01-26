@@ -1,11 +1,6 @@
 # 图标，表情
 
-One of the best features of Material for MkDocs is the possibility to use [more
-than 10,000 icons][icon search] and thousands of emojis in your project 
-documentation with practically zero additional effort. Moreover, custom icons 
-can be added and used in `mkdocs.yml`, documents and templates.
-
-  [icon search]: #search
+Material for MkDocs 最好的特性之一是可以在你的项目文档中使用超过 10000 个图标和数千个表情，而无需额外的努力。
 
 ## 搜索
 
@@ -22,15 +17,12 @@ can be added and used in `mkdocs.yml`, documents and templates.
 </div>
 <small>
   :octicons-light-bulb-16:
-  **Tip:** Enter some keywords to find icons and emojis and click on the
-  shortcode to copy it to your clipboard.
+  **提示:** 输入一些关键词来找到表情和图标，点击表情码可以把它复制到剪贴板。
 </small>
 
 ## 配置
 
-This configuration enables the use of icons and emojis by using simple
-shortcodes which can be discovered through the [icon search]. Add the following
-lines to `mkdocs.yml`:
+请将下面几行添加到 `mkdocs.yml`:
 
 ``` yaml
 markdown_extensions:
@@ -40,36 +32,27 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
 ```
 
-The following icon sets are bundled with Material for MkDocs:
+Material for MkDocs 自带了下面的图标集:
 
 - :material-material-design: – [Material Design]
 - :fontawesome-brands-font-awesome: – [FontAwesome]
 - :octicons-mark-github-16: – [Octicons]
 - :simple-simpleicons: – [Simple Icons]
 
-See additional configuration options:
-
-- [Attribute Lists]
-- [Emoji]
-- [Emoji with custom icons]
-
   [Material Design]: https://materialdesignicons.com/
   [FontAwesome]: https://fontawesome.com/search?m=free
   [Octicons]: https://octicons.github.com/
   [Simple Icons]: https://simpleicons.org/
-  [Attribute Lists]: ../setup/extensions/python-markdown.md#attribute-lists
-  [Emoji]: ../setup/extensions/python-markdown-extensions.md#emoji
-  [Emoji with custom icons]: ../setup/extensions/python-markdown-extensions.md#custom-icons
+
 
 ## 使用
 
 ### 使用表情
 
-Emojis can be integrated in Markdown by putting the shortcode of the emoji
-between two colons. If you're using [Twemoji] (recommended), you can look up
-the shortcodes at [Emojipedia]:
+可以使用两个 `:`  加上中间的表情码在 Markdown 中集成表情。
+如果你正在使用 [Twemoji] (推荐), 你可以在 [Emojipedia] 查看表情码:
 
-``` title="Emoji"
+``` title="表情"
 :smile: 
 ```
 
@@ -84,11 +67,9 @@ the shortcodes at [Emojipedia]:
 
 ### 使用图标
 
-When [Emoji] is enabled, icons can be used similar to emojis, by referencing
-a valid path to any icon bundled with the theme, which are located in the
-[`.icons`][custom icons] directory, and replacing `/` with `-`:
+当表情被启用时，图标也可以通过类似于表情的方式使用，通过引用一个与主题绑定的有效路径，这个路径位于 [`.icons`][custom icons] 文件夹，并且需要用 `-` 替代 `/`:
 
-``` title="Icon"
+``` title="图标"
 :fontawesome-regular-face-laugh-wink:
 ```
 
