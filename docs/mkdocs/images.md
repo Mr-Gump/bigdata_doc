@@ -68,8 +68,7 @@ plugins:
 
     </div>
 
-If there's insufficient space to render the text next to the image, the image
-will stretch to the full width of the viewport, e.g. on mobile viewports.
+如果没有足够的空间渲染在内容旁边的图像, 图像会膨胀到整个视图大小, 例如移动设备试图
 
 ??? question "Why is there no centered alignment?"
 

@@ -4,9 +4,7 @@
 
 ## 配置
 
-This configuration enables content tabs, and allows to nest arbitrary content
-inside content tabs, including code blocks and ... more content tabs! Add the 
-following lines to `mkdocs.yml`:
+请将下面几行添加到 `mkdocs.yml`:
 
 ``` yaml
 markdown_extensions:
@@ -17,12 +15,7 @@ markdown_extensions:
 
 ### 连接内容标签页
 
-[:octicons-tag-24: 8.3.0][Linked content tabs support] ·
-:octicons-unlock-24: Feature flag
-
-When enabled, all content tabs across the whole documentation site will be
-linked and switch to the same label when the user clicks on a tab. Add the 
-following lines to `mkdocs.yml`:
+当启用时，当用户点击一个标签页时，整个文档中的所有内容标签页都会被链接和切换到同一个标签。添加下面几行到 `mkdocs.yml`:
 
 ``` yaml
 theme:
@@ -30,10 +23,8 @@ theme:
     - content.tabs.link
 ```
 
-Content tabs are linked based on their label, not offset. This means that all
-tabs with the same label will be activated when a user clicks a content tab
-regardless of order inside a container. Furthermore, this feature is fully
-integrated with [instant loading] and persisted across page loads.
+内容标签页根据它们的标签被链接，而不是偏移量。这意味着所有的带有相同标签的标签页当用户点击一个内容标签页时会被激活，无论它们在块中的顺序。而且这个特性完全和
+[instant loading] 集成并且在整个页面加载时生效。
 
 === "Feature enabled"
 
@@ -44,7 +35,6 @@ integrated with [instant loading] and persisted across page loads.
     [![Linked content tabs disabled]][Linked content tabs disabled]
 
   [Linked content tabs support]: https://github.com/squidfunk/mkdocs-material/releases/tag/8.3.0
-  [instant loading]: ../setup/setting-up-navigation.md#instant-loading
   [Linked content tabs enabled]: ../assets/screenshots/content-tabs-link.png
   [Linked content tabs disabled]: ../assets/screenshots/content-tabs.png
 
