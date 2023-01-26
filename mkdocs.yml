@@ -78,16 +78,21 @@ markdown_extensions:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight
+  - pymdownx.snippets
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.smartsymbols
-  - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 
 repo_name: bigdata_doc
 repo_url: https://github.com/Mr-Gump/bigdata_doc
@@ -113,7 +118,7 @@ nav:
     - 角注: mkdocs/footnotes.md
     - 格式: mkdocs/formatting.md
     - 网格: mkdocs/grids.md
-    - 图标, 表情: mkdocs/icons-emojis.md
+    - 图标，表情: mkdocs/icons-emojis.md
     - 图像: mkdocs/images.md
     - 列表: mkdocs/lists.md
     - 工具提示: mkdocs/tooltips.md

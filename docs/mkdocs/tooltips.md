@@ -1,11 +1,8 @@
-# Tooltips
+# 工具提示
 
-Technical documentation often incurs the usage of many acronyms, which may
-need additional explanation, especially for new user of your project. For these
-matters, Material for MkDocs uses a combination of Markdown extensions to
-enable site-wide glossaries.
+技术项目文档通常包含许多缩写，这些缩写需要通常需要额外的解释，特别是对于项目的新用户。因为这些原因，Material for MkDocs 结合了 Markdown 扩展以在整个页面启用术语。
 
-## Configuration
+## 配置
 
 This configuration enables abbreviations and allows to build a simple
 project-wide glossary, sourcing definitions from a central location. Add the
@@ -18,43 +15,9 @@ markdown_extensions:
   - pymdownx.snippets
 ```
 
-See additional configuration options:
+## 使用
 
-- [Abbreviations]
-- [Attribute Lists]
-- [Snippets]
-
-  [Abbreviations]: ../setup/extensions/python-markdown.md#abbreviations
-  [Attribute Lists]: ../setup/extensions/python-markdown.md#attribute-lists
-  [Snippets]: ../setup/extensions/python-markdown-extensions.md#snippets
-
-### Improved tooltips
-
-[:octicons-heart-fill-24:{ .mdx-heart } Sponsors only][Insiders]{ .mdx-insiders } ·
-[:octicons-tag-24: insiders-4.15.0][Insiders] ·
-:octicons-beaker-24: Experimental
-
-When improved tooltips are enabled, Material for MkDocs replaces the browser's
-rendering logic for `title` attribute with beautiful little tooltips.
-Add the following lines to `mkdocs.yml`:
-
-``` yaml
-theme:
-  features:
-    - content.tooltips
-```
-
-Now, tooltips will be rendered for the following elements:
-
-- __Content__ – elements with a `title`, permalinks and code copy button
-- __Header__ – home button, header title, color palette switch and repository link
-- __Navigation__ – links that are shortened with ellipsis, i.e. `...`
-
-[Insiders]: ../insiders/index.md
-
-## Usage
-
-### Adding tooltips
+### 添加工具提示
 
 The [Markdown syntax] allows to specify a `title` for each link, which will
 render as a beautiful tooltip when [improved tooltips] are enabled. Add a 
@@ -100,7 +63,7 @@ extension:
   [Markdown syntax]: https://daringfireball.net/projects/markdown/syntax#link
   [improved tooltips]: #improved-tooltips
 
-### Adding abbreviations
+### 添加缩写
 
 Abbreviations can be defined by using a special syntax similar to URLs and 
 [footnotes], starting with a `*` and immediately followed by the term or
@@ -124,7 +87,7 @@ The HTML specification is maintained by the W3C.
 
   [footnotes]: footnotes.md
 
-### Adding a glossary
+### 添加术语表
 
 The [Snippets] extension can be used to implement a simple glossary by moving
 all abbreviations in a dedicated file[^1], and [auto-append] this file to all

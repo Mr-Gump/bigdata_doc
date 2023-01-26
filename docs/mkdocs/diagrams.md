@@ -1,4 +1,4 @@
-# Diagrams
+# 图表
 
 Diagrams help to communicate complex relationships and interconnections between
 different technical components, and are a great addition to project
@@ -7,7 +7,7 @@ popular and flexible solution for drawing diagrams.
 
   [Mermaid.js]: https://mermaid-js.github.io/mermaid/
 
-## Configuration
+## 配置
 
 [:octicons-tag-24: 8.2.0][Diagrams support]
 
@@ -43,9 +43,9 @@ No further configuration is necessary. Advantages over a custom integration:
   [additional style sheets]: ../customization.md#additional-css
   [other diagrams]: #other-diagrams
 
-## Usage
+## 使用
 
-### Using flowcharts
+### 使用流程图
 
 [Flowcharts] are diagrams that represent workflows or processes. The steps
 are rendered as nodes of various kinds and are connected by edges, describing
@@ -77,7 +77,7 @@ graph LR
 
   [Flowcharts]: https://mermaid-js.github.io/mermaid/#/flowchart
 
-### Using sequence diagrams
+### 使用序列图
 
 [Sequence diagrams] describe a specific scenario as sequential interactions 
 between multiple objects or actors, including the messages that are exchanged
@@ -117,7 +117,7 @@ sequenceDiagram
 
   [Sequence diagrams]: https://mermaid-js.github.io/mermaid/#/sequenceDiagram
 
-### Using state diagrams
+### 使用状态图
 
 [State diagrams] are a great tool to describe the behavior of a system,
 decomposing it into a finite number of states, and transitions between those
@@ -159,7 +159,7 @@ stateDiagram-v2
 
   [State diagrams]: https://mermaid-js.github.io/mermaid/#/stateDiagram
 
-### Using class diagrams
+### 使用类图
 
 [Class diagrams] are central to object oriented programing, describing the
 structure of a system by modelling entities as classes and relationships between
@@ -231,7 +231,7 @@ classDiagram
 
   [Class diagrams]: https://mermaid-js.github.io/mermaid/#/classDiagram
 
-### Using entity-relationship diagrams
+### 使用 ER 图
 
 An [entity-relationship diagram] is composed of entity types and specifies
 relationships that exist between entities. It describes inter-related things in
@@ -259,7 +259,7 @@ erDiagram
 
   [entity-relationship diagram]: https://mermaid-js.github.io/mermaid/#/entityRelationshipDiagram
 
-### Other diagram types
+### 其他图表类型
 
 Besides the diagram types listed above, [Mermaid.js] provides support for
 [pie charts], [gantt charts], [user journeys], [git graphs] and

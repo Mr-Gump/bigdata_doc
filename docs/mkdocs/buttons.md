@@ -1,80 +1,58 @@
-# Buttons
+# 按钮
 
-Material for MkDocs provides dedicated styles for primary and secondary buttons
-that can be added to any link, `label` or `button` element. This is especially
-useful for documents or landing pages with dedicated _call-to-actions_.
+Material for MkDocs 为能够把链接转化为一级和二级按钮提供了丰富的样式（`label` 或者 `button` 元素）. 这对文档或者复杂页面中的中 _调用动作_ 特别有用。
 
-## Configuration
+## 配置
 
-This configuration allows to add attributes to all inline- and block-level
-elements with a simple syntax, turning any link into a button. Add the
-following lines to `mkdocs.yml`:
+请把下面几行添加到 `mkdocs.yml`:
 
 ``` yaml
 markdown_extensions:
   - attr_list
 ```
 
-See additional configuration options:
+## 使用
 
-- [Attribute Lists]
+### 添加按钮
 
-  [Attribute Lists]: ../setup/extensions/python-markdown.md#attribute-lists
+为了把链接渲染为按钮, 在它的后缀添加大括号并在其中添加 `.md-button` 类选择器。
 
-## Usage
-
-### Adding buttons
-
-In order to render a link as a button, suffix it with curly braces and add the
-`.md-button` class selector to it. The button will receive the selected
-[primary color] and [accent color] if active.
-
-``` markdown title="Button"
+``` markdown title="按钮"
 [Subscribe to our newsletter](#){ .md-button }
 ```
 
 <div class="result" markdown>
 
-[Subscribe to our newsletter][Demo]{ .md-button }
+[Subscribe to our newsletter](#){ .md-button }
 
 </div>
 
-  [primary color]: ../setup/changing-the-colors.md#primary-color
-  [accent color]: ../setup/changing-the-colors.md#accent-color 
-  [Demo]: javascript:alert$.next("Demo")
+### 添加一级按钮
 
-### Adding primary buttons
+如果想展示一个一级被填充的按钮, 同时添加 `.md-button` 和 `.md-button--primary`
+CSS 类选择器.
 
-If you want to display a filled, primary button (like on the [landing page]
-of Material for MkDocs), add both, the `.md-button` and `.md-button--primary`
-CSS class selectors.
-
-``` markdown title="Button, primary"
+``` markdown title="一级按钮"
 [Subscribe to our newsletter](#){ .md-button .md-button--primary }
 ```
 
 <div class="result" markdown>
 
-[Subscribe to our newsletter][Demo]{ .md-button .md-button--primary }
+[Subscribe to our newsletter](#){ .md-button .md-button--primary }
 
 </div>
 
-  [landing page]: ../index.md
 
-### Adding icon buttons
+### 添加图标按钮
 
-Of course, icons can be added to all types of buttons by using the [icon syntax]
-together with any valid icon shortcode, which can be easily found with a few keystrokes through our [icon search].
+当然,通过使用图标语法和图标码可以在任何类型的按钮上添加图标。
 
-``` markdown title="Button with icon"
+``` markdown title="带图标按钮"
 [Send :fontawesome-solid-paper-plane:](#){ .md-button }
 ```
 
 <div class="result" markdown>
 
-[Send :fontawesome-solid-paper-plane:][Demo]{ .md-button }
+[Send :fontawesome-solid-paper-plane:](#){ .md-button }
 
 </div>
-
-  [icon syntax]: icons-emojis.md#using-icons
-  [icon search]: icons-emojis.md#search

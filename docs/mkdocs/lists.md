@@ -1,15 +1,11 @@
-# Lists
+# 列表
 
-Material for MkDocs supports several flavors of lists that cater to different
-use cases, including _unordered lists_ and _ordered lists_, which are supported
-through standard Markdown, as well as _definition lists_ and _task lists_, which
-are supported through extensions.
+Material for MkDocs 支持几种特色的列表以满足不同场景的应用，包括 _无序列表_ 和 _有序列表_，这两种被标准的 Markdown 支持，也包括 _定义列表_ 和 _任务列表_，通过插件支持。
 
-## Configuration
+## 配置
 
-This configuration enables the use of definition lists and tasks lists, which
-are both not part of the standard Markdown syntax. Add the following lines to
-`mkdocs.yml`:
+请加入下面几行到
+`mkdocs.yml` 以支持定义列表和任务列表:
 
 ``` yaml
 markdown_extensions:
@@ -18,21 +14,11 @@ markdown_extensions:
       custom_checkbox: true
 ```
 
-See additional configuration options:
+## 使用
 
-- [Definition Lists]
-- [Tasklist]
+### 使用无序列表
 
-  [Definition Lists]: ../setup/extensions/python-markdown.md#definition-lists
-  [Tasklist]: ../setup/extensions/python-markdown-extensions.md#tasklist
-
-## Usage
-
-### Using unordered lists
-
-Unordered lists can be written by prefixing a line with a `-`, `*` or `+` list
-marker, all of which can be used interchangeably. Furthermore, all flavors
-of lists can be nested inside each other:
+无序列表可以通过在前缀加上一个 `-`, `*` 或 `+` 列表标记, 这些标记可以互相交换。 更进一步，所有的列表可以互相嵌套:
 
 ``` markdown title="List, unordered"
 - Nulla et rhoncus turpis. Mauris ultricies elementum leo. Duis efficitur
@@ -56,13 +42,11 @@ of lists can be nested inside each other:
 
 </div>
 
-### Using ordered lists
+### 使用有序列表
 
-Ordered lists must start with a number immediately followed by a dot. The 
-numbers do not need to be consecutive and can be all set to `1.`, as they will
-be re-numbered when rendered:
+有序列表以数字加上后面的点(.)开始,数字不需要是连续的并且可以都设置为 `1.`, 因为它们被渲染的时候会重新编号:
 
-``` markdown title="List, ordered"
+``` markdown title="有序列表"
 1.  Vivamus id mi enim. Integer id turpis sapien. Ut condimentum lobortis
     sagittis. Aliquam purus tellus, faucibus eget urna at, iaculis venenatis
     nulla. Vivamus a pharetra leo.
@@ -98,12 +82,11 @@ be re-numbered when rendered:
 
 </div>
 
-### Using definition lists
+### 使用定义列表
 
-When [Definition Lists] is enabled, lists of arbitrary key-value pairs, e.g. the
-parameters of functions or modules, can be enumerated with a simple syntax:
+当定义列表被启用，键值对列表，例如函数或模块的参数，可以通过一种简单的语法列举:
 
-``` markdown title="Definition list"
+``` markdown title="定义列表"
 `Lorem ipsum dolor sit amet`
 
 :   Sed sagittis eleifend rutrum. Donec vitae suscipit est. Nullam tempus
@@ -137,11 +120,9 @@ parameters of functions or modules, can be enumerated with a simple syntax:
 
 </div>
 
-### Using task lists
+### 使用任务列表
 
-When [Tasklist] is enabled, unordered list items can be prefixed with `[ ]` to
-render an unchecked checkbox or `[x]` to render a checked checkbox, allowing
-for the definition of task lists:
+当任务列表被启用，无序列表中的条目可以加上 `[ ]` 前缀，来渲染一个未勾选的选项框或者用 `[x]` 来渲染一个勾选了的选项框:
 
 ``` markdown title="Task list"
 - [x] Lorem ipsum dolor sit amet, consectetur adipiscing elit

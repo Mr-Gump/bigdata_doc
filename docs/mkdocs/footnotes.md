@@ -1,11 +1,11 @@
-# Footnotes
+# 角注
 
 Footnotes are a great way to add supplemental or additional information to a
 specific word, phrase or sentence without interrupting the flow of a document.
 Material for MkDocs provides the ability to define, reference and render
 footnotes.
 
-## Configuration
+## 配置
 
 This configuration adds the ability to define inline footnotes, which are then
 rendered below all Markdown content of a document. Add the following lines to
@@ -22,9 +22,9 @@ See additional configuration options:
 
   [Footnotes]: ../setup/extensions/python-markdown.md#footnotes
 
-## Usage
+## 使用
 
-### Adding footnote references
+### 添加角注引用
 
 A footnote reference must be enclosed in square brackets and must start with a
 caret `^`, directly followed by an arbitrary identifier, which is similar to
@@ -40,14 +40,14 @@ Lorem ipsum[^1] dolor sit amet, consectetur adipiscing elit.[^2]
 
 </div>
 
-### Adding footnote content
+### 添加角注内容
 
 The footnote content must be declared with the same identifier as the reference.
 It can be inserted at an arbitrary position in the document and is always
 rendered at the bottom of the page. Furthermore, a backlink to the footnote
 reference is automatically added.
 
-#### on a single line
+#### 在一行上
 
 Short footnotes can be written on the same line:
 
@@ -63,7 +63,7 @@ Short footnotes can be written on the same line:
 
   [^1]: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-#### on multiple lines
+#### 在多行上
 
 Paragraphs can be written on the next line and must be indented by four spaces:
 

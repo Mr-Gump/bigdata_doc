@@ -1,20 +1,16 @@
 # MathJax
 
-[MathJax] is a beautiful and accessible way to display mathematical content
-in the browser, adds support for mathematical typesetting in different notations
-(e.g. [LaTeX], [MathML], [AsciiMath]), and can be easily integrated with
-Material for MkDocs.
+[MathJax] 是一个优雅的可用的在浏览器中展示数学类内容的方式，为包含不同符号数学排版添加支持(例如 [LaTeX], [MathML], [AsciiMath])，并且可以很容易地与
+Material for MkDocs 集成.
 
   [MathJax]: https://www.mathjax.org/
   [LaTeX]: https://en.wikibooks.org/wiki/LaTeX/Mathematics
   [MathML]: https://en.wikipedia.org/wiki/MathML
   [AsciiMath]: http://asciimath.org/
 
-## Configuration
+## 配置
 
-This configuration enables support for rendering block and inline block
-equations through [MathJax]. Create a configuration file and add the following
-lines to `mkdocs.yml`:
+创建一个配置文件并且添加下面几行到 `mkdocs.yml`:
 
 === ":octicons-file-code-16: `docs/javascripts/mathjax.js`"
 
@@ -37,8 +33,6 @@ lines to `mkdocs.yml`:
     })
     ```
 
-    1. This integrates MathJax with [instant loading].
-
 === ":octicons-file-code-16: `mkdocs.yml`"
 
     ``` yaml
@@ -51,13 +45,6 @@ lines to `mkdocs.yml`:
       - https://polyfill.io/v3/polyfill.min.js?features=es6
       - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     ```
-
-See additional configuration options:
-
-- [Arithmatex]
-
-  [Arithmatex]: ../setup/extensions/python-markdown-extensions.md#arithmatex
-  [instant loading]: ../setup/setting-up-navigation.md#instant-loading
 
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -76,12 +63,11 @@ See additional configuration options:
   };
 </script>
 
-## Usage
+## 使用
 
-### Using block syntax
+### 使用块语法
 
-Blocks must be enclosed in `#!latex $$...$$` or `#!latex \[...\]` on separate
-lines:
+块必须被包含在 `#!latex $$...$$` 或 `#!latex \[...\]` 中:
 
 ``` latex title="MathJax, block syntax"
 $$
@@ -97,9 +83,9 @@ $$
 
 </div>
 
-### Using inline block syntax
+### 使用行内块语法
 
-Inline blocks must be enclosed in `#!latex $...$` or `#!latex \(...\)`:
+行内块必须被包含在 `#!latex $...$` 或 `#!latex \(...\)` 中:
 
 ``` latex title="MathJax, inline syntax"
 The homomorphism $f$ is injective if and only if its kernel is only the 

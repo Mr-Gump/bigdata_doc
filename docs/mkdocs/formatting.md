@@ -1,4 +1,4 @@
-# Formatting
+# 格式
 
 Material for MkDocs provides support for several HTML elements that can be used 
 to highlight sections of a document or apply specific formatting. Additionally, 
@@ -7,7 +7,7 @@ for a document.
 
   [Critic Markup]: https://github.com/CriticMarkup/CriticMarkup-toolkit
 
-## Configuration
+## 配置
 
 This configuration enables support for keyboard keys, tracking changes in
 documents, defining sub- and superscript and highlighting text. Add the 
@@ -32,9 +32,9 @@ See additional configuration options:
   [Caret, Mark & Tilde]: ../setup/extensions/python-markdown-extensions.md#caret-mark-tilde
   [Keys]: ../setup/extensions/python-markdown-extensions.md#keys
 
-## Usage
+## 使用
 
-### Highlighting changes
+### 高亮改变
 
 When [Critic] is enabled, [Critic Markup] can be used, which adds the ability to 
 highlight suggested changes, as well as add inline comments to a document:
@@ -72,7 +72,7 @@ Text can be <del class="critic">deleted</del> and replacement text
 
 </div>
 
-### Highlighting text
+### 高亮文本
 
 When [Caret, Mark & Tilde] are enabled, text can be highlighted with a simple 
 syntax, which is more convenient that directly using the corresponding
@@ -96,7 +96,7 @@ syntax, which is more convenient that directly using the corresponding
   [ins]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ins
   [del]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del
 
-### Sub- and superscripts
+### 下标和上标
 
 When [Caret & Tilde][Caret, Mark & Tilde] are enabled, text can be sub- and 
 superscripted with a simple syntax, which is more convenient than directly
@@ -117,7 +117,7 @@ using the corresponding [`sub`][sub] and [`sup`][sup] HTML tags:
   [sub]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/sub
   [sup]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/sup
 
-### Adding keyboard keys
+### 添加键盘的键
 
 When [Keys] is enabled, keyboard keys can be rendered with a simple syntax.
 Consult the [Python Markdown Extensions] documentation to learn about all

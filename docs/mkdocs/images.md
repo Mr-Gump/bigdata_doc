@@ -1,11 +1,11 @@
-# Images
+# 图像
 
 While images are first-class citizens of Markdown and part of the core syntax, 
 it can be difficult to work with them. Material for MkDocs makes working with 
 images more comfortable, providing styles for image alignment and image
 captions.
 
-## Configuration
+## 配置
 
 This configuration adds the ability to align images, add captions to images
 (rendering them as figures), and mark large images for lazy-loading. Add the
@@ -30,15 +30,14 @@ See additional configuration options:
 [:octicons-tag-24: 0.1.0][Lightbox support] ·
 [:octicons-cpu-24: Plugin][glightbox]
 
-If you want to add image zoom functionality to your documentation, the 
-[glightbox] plugin is an excellent choice, as it integrates perfectly
-with Material for MkDocs. Install it with `pip`:
+如果你想为你的文档添加图像缩放的功能, 
+[glightbox] 插件是一个很好的选择,因为它和 Material for MkDocs 集成得很好。使用 `pip` 安装它:
 
 ```
 pip install mkdocs-glightbox
 ```
 
-Then, add the following lines to `mkdocs.yml`:
+然后，把下面几行添加到 `mkdocs.yml`:
 
 ``` yaml
 plugins:
@@ -52,9 +51,9 @@ We recommend checking out the available
   [glightbox]: https://github.com/blueswen/mkdocs-glightbox
   [glightbox options]: https://github.com/blueswen/mkdocs-glightbox#usage
 
-## Usage
+## 使用
 
-### Image alignment
+### 图像对齐
 
 When [Attribute Lists] is enabled, images can be aligned by adding the
 respective alignment directions via the `align` attribute, i.e. `align=left` or
@@ -112,7 +111,7 @@ will stretch to the full width of the viewport, e.g. on mobile viewports.
   [align]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#deprecated_attributes
   [image captions]: #image-captions
 
-### Image captions
+### 图像说明
 
 Sadly, the Markdown syntax doesn't provide native support for image captions,
 but it's always possible to use the [Markdown in HTML] extension with literal
@@ -132,7 +131,7 @@ but it's always possible to use the [Markdown in HTML] extension with literal
   </figure>
 </div>
 
-### Image lazy-loading
+### 图像懒加载
 
 Modern browsers provide [native support for lazy-loading images][lazy-loading]
 through the `loading=lazy` directive, which degrades to eager-loading in
@@ -148,7 +147,7 @@ browsers without support:
 
   [lazy-loading]: https://caniuse.com/#feat=loading-lazy-attr
 
-### Light and dark mode
+### 亮/暗模式
 
 [:octicons-tag-24: 8.1.1][Light and dark mode support]
 
