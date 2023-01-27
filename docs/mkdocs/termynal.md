@@ -41,13 +41,13 @@ Hello termynal!
 ```
 </div>
 ````
-<div class="result" markdown>
+
 <div class="termy">
 ```console
 Hello termynal!
 ```
 </div>
-</div>
+
 
 
 ### 命令
@@ -59,15 +59,15 @@ $ pwd
 /root
 ```
 </div>
+
 ````
-<div class="result" markdown>
 <div class="termy">
 ```console
 $ pwd
 /root
 ```
 </div>
-</div>
+
 
 ### 进度条
 
@@ -82,7 +82,7 @@ Requirement already satisfied!
 </div>
 ````
 
-<div class="result" markdown>
+
 <div class="termy">
 ```console
 $ pip install mkdocs
@@ -90,7 +90,7 @@ $ pip install mkdocs
 Requirement already satisfied!
 ```
 </div>
-</div>
+
 
 ### 注释
 注释动画需要加上 `//` 前缀进行指定
@@ -103,7 +103,6 @@ $ ping baidu.com
 ```
 </div>
 ````
-<div class="result" markdown>
 <div class="termy">
 ```console
 // ping test
@@ -116,5 +115,4 @@ PING baidu.com (198.18.3.115): 56 data bytes
 --- baidu.com ping statistics ---
 4 packets transmitted, 4 packets received, 0.0% packet loss
 ```
-</div>
 </div>

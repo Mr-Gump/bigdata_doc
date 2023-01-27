@@ -19,7 +19,7 @@ theme:
     # - navigation.expand
     - navigation.footer
     - navigation.indexes
-    - navigation.instant
+    # - navigation.instant
     # - navigation.prune
     - navigation.sections
     - navigation.tabs
@@ -124,13 +124,20 @@ nav:
     - 工具提示: mkdocs/tooltips.md
     - MathJax: mkdocs/mathjax.md
     - Termynal: mkdocs/termynal.md
-  - Linux: linux.md
-  - Scala: scala.md
-  - Hadoop: hadoop.md
-  - Hive: hive.md
-  - Kafka: kafka.md
-  - Spark: spark/index.md
-  - Flink: flink/index.md
+  - Linux: 
+    - linux/index.md
+  - Scala: 
+    - scala/index.md
+  - Hadoop: 
+    - hadoop/index.md
+  - Hive: 
+    - hive/index.md
+  - Kafka: 
+    - kafka/index.md
+  - Spark: 
+    - spark/index.md
+  - Flink: 
+    - flink/index.md
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
@@ -151,3 +158,6 @@ nav:
     - 容器化: container/index.md
     - docker: container/docker.md
     - kubernetes: container/k8s.md
+  - 项目文档:
+    - 项目文档: project/index.md
+    - 电商离线数仓: project/dataware.md

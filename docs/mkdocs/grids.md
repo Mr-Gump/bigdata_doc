@@ -123,10 +123,10 @@ markdown_extensions:
 如果没有足够的空间来渲染彼此相邻的网格项，则这些项将延伸到视口的整个宽度，例如在移动视口上。如果有更多的可用空间，网格将呈现3项或更多项。
 
   [mkdocs-material]: https://pypistats.org/packages/mkdocs-material
-  [pip]: ../getting-started.md#with-pip
-  [reference]: ../reference/index.md
-  [customization]: ../customization.md
-  [license]: ../license.md
+  [pip]: ../index.md
+  [reference]: ../index.md
+  [customization]: ../index.md
+  [license]: ../index.md
   [GitHub]: https://github.com/squidfunk/mkdocs-material
 
 
