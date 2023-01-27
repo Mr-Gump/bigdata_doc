@@ -153,7 +153,10 @@ nav:
   - 数据库:
     - 数据库: db/index.md
     - Redis: db/redis.md
-    - Clickhouse: db/clickhouse.md
+    - Clickhouse: 
+      - ClickHouse入门: db/ck/ck_01.md
+      - ClickHouse安装: db/ck/ck_02.md
+      - 数据类型: db/ck/ck_03.md
   - 容器化:
     - 容器化: container/index.md
     - docker: container/docker.md
