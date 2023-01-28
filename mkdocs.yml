@@ -21,7 +21,7 @@ theme:
     - navigation.indexes
     # - navigation.instant
     # - navigation.prune
-    - navigation.sections
+    # - navigation.sections
     - navigation.tabs
     # - navigation.tabs.sticky
     - navigation.top
@@ -83,6 +83,7 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.smartsymbols
+  - pymdownx.critic
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tasklist:
@@ -154,9 +155,14 @@ nav:
     - 数据库: db/index.md
     - Redis: db/redis.md
     - Clickhouse: 
+      # - db/ck/index.md
       - ClickHouse入门: db/ck/ck_01.md
       - ClickHouse安装: db/ck/ck_02.md
       - 数据类型: db/ck/ck_03.md
+      - 表引擎: db/ck/ck_04.md
+      - SQL操作: db/ck/ck_05.md
+      - 副本: db/ck/ck_06.md
+      - 分片集群: db/ck/ck_07.md
   - 容器化:
     - 容器化: container/index.md
     - docker: container/docker.md
