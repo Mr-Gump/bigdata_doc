@@ -154,9 +154,15 @@ nav:
     - Dophin Scheduler: schedule/ds.md
   - 数据库:
     - 数据库: db/index.md
-    - Redis: db/redis.md
+    - Redis: 
+      - NoSQL: db/redis/rd_01.md
+      - Redis简介: db/redis/rd_02.md
+      - Redis安装: db/redis/rd_03.md
+      - Redis的五大数据类型: db/redis/rd_04.md
+      - Redis的相关配置: db/redis/rd_05.md
+      - Jedis: db/redis/rd_06.md
+      - Redis 持久化: db/redis/rd_07.md
     - Clickhouse: 
-      # - db/ck/index.md
       - ClickHouse入门: db/ck/ck_01.md
       - ClickHouse安装: db/ck/ck_02.md
       - 数据类型: db/ck/ck_03.md
