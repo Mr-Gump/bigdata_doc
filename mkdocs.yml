@@ -139,6 +139,11 @@ nav:
   - Spark: 
     - Spark概述: spark/spark_01.md
     - Spark运行模式: spark/spark_02.md
+    - RDD概述: spark/spark_03.md
+    - RDD编程: spark/spark_04.md
+    - 累加器: spark/spark_05.md
+    - 广播变量: spark/spark_06.md
+    - SparkCore实战: spark/spark_07.md
   - Flink: 
     - flink/index.md
   - 版本控制工具: 
