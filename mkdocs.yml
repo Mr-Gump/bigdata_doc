@@ -181,5 +181,8 @@ nav:
     - docker: container/docker.md
     - kubernetes: container/k8s.md
   - 项目文档:
-    - 项目文档: project/index.md
-    - 电商离线数仓: project/dataware.md
+    - 数据仓库概述: project/dataware_01.md
+    - 数据仓库建模概述: project/dataware_02.md
+    - 维度建模理论之事实表: project/dataware_03.md
+    - 维度建模理论之维度表: project/dataware_04.md
+    - 数据仓库设计: project/dataware_05.md
