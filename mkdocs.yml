@@ -176,6 +176,7 @@ nav:
       - SQL操作: db/ck/ck_05.md
       - 副本: db/ck/ck_06.md
       - 分片集群: db/ck/ck_07.md
+      - Bitmap: db/ck/ck_08.md
   - 容器化:
     - 容器化: container/index.md
     - docker: container/docker.md
