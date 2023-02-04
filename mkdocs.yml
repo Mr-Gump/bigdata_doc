@@ -177,6 +177,13 @@ nav:
       - 副本: db/ck/ck_06.md
       - 分片集群: db/ck/ck_07.md
       - Bitmap: db/ck/ck_08.md
+    - Hbase:
+      - HBase简介: db/hbase/hb_01.md
+      - HBase快速入门: db/hbase/hb_02.md
+      - HBase API: db/hbase/hb_03.md
+      - HBase进阶: db/hbase/hb_04.md
+      - HBase优化: db/hbase/hb_05.md
+      - 整合Phoenix: db/hbase/hb_06.md
   - 容器化:
     - 容器化: container/index.md
     - docker: container/docker.md
