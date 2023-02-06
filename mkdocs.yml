@@ -136,16 +136,24 @@ nav:
     - hive/index.md
   - Kafka: 
     - kafka/index.md
-  - Spark: 
-    - Spark概述: spark/spark_01.md
-    - Spark运行模式: spark/spark_02.md
-    - RDD概述: spark/spark_03.md
-    - RDD编程: spark/spark_04.md
-    - 累加器: spark/spark_05.md
-    - 广播变量: spark/spark_06.md
-    - SparkCore实战: spark/spark_07.md
-  - Flink: 
-    - flink/index.md
+  - 计算引擎:
+    - Spark: 
+      - Spark概述: engine/spark/spark_01.md
+      - Spark运行模式: engine/spark/spark_02.md
+      - RDD概述: engine/spark/spark_03.md
+      - RDD编程: engine/spark/spark_04.md
+      - 累加器: engine/spark/spark_05.md
+      - 广播变量: engine/spark/spark_06.md
+      - SparkCore实战: engine/spark/spark_07.md
+      - SparkSQL概述: engine/spark/spark_08.md
+      - SparkSQL编程: engine/spark/spark_09.md
+      - SparkSQL数据的加载与保存: engine/spark/spark_10.md
+      - SparkSQL项目实战: engine/spark/spark_11.md
+    - Flink: 
+      - 初识 Flink: engine/flink/flink_01.md
+      - Flink运行时架构: engine/flink/flink_02.md
+    - Tez:
+      - engine/tez/tez_01.md
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
@@ -159,7 +167,6 @@ nav:
     - 调度工具: schedule/index.md
     - Dophin Scheduler: schedule/ds.md
   - 数据库:
-    - 数据库: db/index.md
     - Redis: 
       - NoSQL: db/redis/rd_01.md
       - Redis简介: db/redis/rd_02.md
@@ -189,8 +196,9 @@ nav:
     - docker: container/docker.md
     - kubernetes: container/k8s.md
   - 项目文档:
-    - 数据仓库概述: project/dataware_01.md
-    - 数据仓库建模概述: project/dataware_02.md
-    - 维度建模理论之事实表: project/dataware_03.md
-    - 维度建模理论之维度表: project/dataware_04.md
-    - 数据仓库设计: project/dataware_05.md
+    - 数据仓库建模理论:
+      - 数据仓库概述: project/dataware_01.md
+      - 数据仓库建模概述: project/dataware_02.md
+      - 维度建模理论之事实表: project/dataware_03.md
+      - 维度建模理论之维度表: project/dataware_04.md
+      - 数据仓库设计: project/dataware_05.md
