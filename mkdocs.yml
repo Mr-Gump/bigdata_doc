@@ -134,8 +134,13 @@ nav:
     - hadoop/index.md
   - Hive: 
     - hive/index.md
-  - Kafka: 
-    - kafka/index.md
+  - 消息队列: 
+    - Kafka:
+      - Kafka概述: mq/kafka/kf_01.md
+      - Kafka快速入门: mq/kafka/kf_02.md
+      - Kafka生产者: mq/kafka/kf_03.md
+      - Kafka Broker工作流程: mq/kafka/kf_04.md
+      - Kafka消费者: mq/kafka/kf_05.md
   - 计算引擎:
     - Spark: 
       - Spark概述: engine/spark/spark_01.md
@@ -153,7 +158,8 @@ nav:
       - 初识 Flink: engine/flink/flink_01.md
       - Flink运行时架构: engine/flink/flink_02.md
     - Tez:
-      - engine/tez/tez_01.md
+      - Tez概述: engine/tez/tez_01.md
+      - Hive on Tez部署: engine/tez/tez_02.md
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md

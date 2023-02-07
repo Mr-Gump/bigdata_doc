@@ -121,7 +121,7 @@ $ flink run jar包 -p 16
 ![9](https://cos.gump.cloud/uPic/9.svg)
 
 - StreamGraph：是根据用户通过 Stream API 编写的代码生成的最初的有向无环图。用来表示程序的拓扑结构。源码：`StreamGraph.java`
-- JobGraph：StreamGraph 在编译的阶段经过优化后生成了 JobGraph（源码：`JobGraph.java`），JobGraph 就是提交给作业管理器的数据结构。主要的优化为，将多个符合条件（没有 shuffle，并行度相同）的算子串在一起作为一个{==任务链节点==}。保证同一个任务链节点里面的所有算子都在同一个任务插槽的同一个线程中执行。这样算子之间的数据就是本地转发（无需序列化反序列化和网络 IO）。两个条件：
+- JobGraph：StreamGraph 在编译的阶段经过优化后生成了 JobGraph（源码：`JobGraph.java`），JobGraph 就是提交给作业管理器的数据结构。主要的优化为，将多个符合条件（没有 shuffle，并行度相同）的算子串在一起作为一个{==算子链节点==}。保证同一个算子链节点里面的所有算子都在同一个任务插槽的同一个线程中执行。这样算子之间的数据就是本地转发（无需序列化反序列化和网络 IO）。两个条件：
   - 两个算子之间没有 shuffle 存在
   - 两个算子的并行度必须相同
 - ExecutionGraph：作业管理器根据 JobGraph 生成 ExecutionGraph（源码：`ExecutionGraph.java`）。ExecutionGraph 是 JobGraph 的并行化版本，是调度层最核心的数据结构。
@@ -143,9 +143,9 @@ source.setParallelism(1)
 
 StreamGraph 在客户端编译时生成了 JobGraph。
 
-- source 和 flatMap 由于并行度不同，所以无法合并成一个任务链
-- flatMap 和 reduce 虽然并行度相同，但由于算子之间存在 shuffle 所以也无法合并成一个任务链
-- reduce 和 sink 并行度相同，且不存在 shuffle，所以可以合成一个任务链
+- source 和 flatMap 由于并行度不同，所以无法合并成一个算子链
+- flatMap 和 reduce 虽然并行度相同，但由于算子之间存在 shuffle 所以也无法合并成一个算子链
+- reduce 和 sink 并行度相同，且不存在 shuffle，所以可以合成一个算子链
   
 
 ![11](https://cos.gump.cloud/uPic/11.svg)
