@@ -154,6 +154,10 @@ nav:
       - SparkSQL编程: engine/spark/spark_09.md
       - SparkSQL数据的加载与保存: engine/spark/spark_10.md
       - SparkSQL项目实战: engine/spark/spark_11.md
+      - Spark提交流程: engine/spark/spark_12.md
+      - Spark任务的执行: engine/spark/spark_13.md
+      - Shuffle: engine/spark/spark_14.md
+      - Spark内存管理: engine/spark/spark_15.md
     - Flink: 
       - 初识 Flink: engine/flink/flink_01.md
       - Flink运行时架构: engine/flink/flink_02.md
