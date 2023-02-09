@@ -126,14 +126,14 @@ nav:
     - 工具提示: mkdocs/tooltips.md
     - MathJax: mkdocs/mathjax.md
     - Termynal: mkdocs/termynal.md
-  - Linux: 
-    - linux/index.md
   - Scala: 
     - scala/index.md
   - Hadoop: 
     - hadoop/index.md
-  - Hive: 
-    - hive/index.md
+  - Zookeeper:
+    - Zookeeper入门: zookeeper/zk_01.md
+    - Zookeeper安装: zookeeper/zk_02.md
+    - Zookeeper实战: zookeeper/zk_03.md
   - 消息队列: 
     - Kafka:
       - Kafka概述: mq/kafka/kf_01.md
@@ -158,12 +158,15 @@ nav:
       - Spark任务的执行: engine/spark/spark_13.md
       - Shuffle: engine/spark/spark_14.md
       - Spark内存管理: engine/spark/spark_15.md
+      - SparkSQL优化: engine/spark/spark_16.md
     - Flink: 
       - 初识 Flink: engine/flink/flink_01.md
       - Flink运行时架构: engine/flink/flink_02.md
     - Tez:
       - Tez概述: engine/tez/tez_01.md
       - Hive on Tez部署: engine/tez/tez_02.md
+    - Hive: 
+      - engine/hive/hive_01.md
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
