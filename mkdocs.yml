@@ -159,6 +159,12 @@ nav:
       - Shuffle: engine/spark/spark_14.md
       - Spark内存管理: engine/spark/spark_15.md
       - SparkSQL优化: engine/spark/spark_16.md
+    - Spark Streaming:
+      - SparkStreaming概述: engine/spark_streaming/ss_01.md
+      - HelloWorld: engine/spark_streaming/ss_02.md
+      - DStream转换: engine/spark_streaming/ss_03.md
+      - DStream输出: engine/spark_streaming/ss_04.md
+      - 优雅关闭: engine/spark_streaming/ss_05.md
     - Flink: 
       - 初识 Flink: engine/flink/flink_01.md
       - Flink运行时架构: engine/flink/flink_02.md

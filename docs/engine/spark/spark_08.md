@@ -26,25 +26,25 @@ RDD（Spark1.0）=》Dataframe（Spark1.3）=》Dataset（Spark1.6）
 
 ## 8.4 Spark SQL的特点
 
-1）易整合
+- [x] 易整合
 
 无缝的整合了 SQL 查询和 Spark 编程。
 
 ![image-20230206184629893](https://cos.gump.cloud/uPic/image-20230206184629893.png)
 
-2）统一的数据访问方式
+- [x] 统一的数据访问方式
 
 使用相同的方式连接不同的数据源。
 
 ![image-20230206184640853](https://cos.gump.cloud/uPic/image-20230206184640853.png)
 
-3）兼容 Hive
+- [x] 兼容 Hive
 
 在已有的仓库上直接运行 SQL 或者 HQL。
 
 ![image-20230206184657337](https://cos.gump.cloud/uPic/image-20230206184657337.png)
 
-4）标准的数据连接
+- [x] 标准的数据连接
 
 通过 JDBC 或者 ODBC 来连接。
 
