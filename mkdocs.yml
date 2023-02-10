@@ -168,6 +168,7 @@ nav:
     - Flink: 
       - 初识 Flink: engine/flink/flink_01.md
       - Flink运行时架构: engine/flink/flink_02.md
+      - Flink水位线机制: engine/flink/flink_watermark.md
     - Tez:
       - Tez概述: engine/tez/tez_01.md
       - Hive on Tez部署: engine/tez/tez_02.md
