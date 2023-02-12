@@ -173,7 +173,8 @@ nav:
       - Tez概述: engine/tez/tez_01.md
       - Hive on Tez部署: engine/tez/tez_02.md
     - Hive: 
-      - engine/hive/hive_01.md
+      - Hive入门: engine/hive/hive_01.md
+      - Hive安装: engine/hive/hive_02.md
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
