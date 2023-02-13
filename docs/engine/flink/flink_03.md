@@ -99,7 +99,7 @@ add(1); // => 3
 
 ### 3.3.1 reduce 算子的并行子任务如何针对每个 key 维护各自的累加器呢？
 
-<figure><img src="figure/15.svg" alt="reduce算子的并行子任务如何维护逻辑分区" style="width:100%;display:block;margin-left:auto;margin-right:auto;"><figcaption style="text-align:center;color:brown;">图-20 reduce算子的并行子任务如何维护逻辑分区</figcaption></figure>
+![15](https://cos.gump.cloud/uPic/15.svg)
 
 假设我们有如下 Flink 代码：
 
@@ -125,7 +125,7 @@ env
 - 3,6 路由到 reduce 的第 3（索引为 2）个并行子任务
 - 2,5,8 路由到 reduce 的第 4（索引为 3）个并行子任务
 
-<figure><img src="figure/14.svg" alt="keyBy可能的一种路由方式" style="width:100%;display:block;margin-left:auto;margin-right:auto;"><figcaption style="text-align:center;color:brown;">图-21 keyBy的路由方式</figcaption></figure>
+![14](https://cos.gump.cloud/uPic/14.svg)
 
 ## 3.4 数据重分布
 

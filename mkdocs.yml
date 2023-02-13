@@ -168,6 +168,11 @@ nav:
     - Flink: 
       - 初识 Flink: engine/flink/flink_01.md
       - Flink运行时架构: engine/flink/flink_02.md
+      - DataStream API: engine/flink/flink_03.md
+      - 底层API: engine/flink/flink_04.md
+      - 窗口: engine/flink/flink_05.md
+      - 逻辑时钟-水位线: engine/flink/flink_06.md
+      - 多流合并: engine/flink/flink_07.md
       - Flink水位线机制: engine/flink/flink_watermark.md
     - Tez:
       - Tez概述: engine/tez/tez_01.md
