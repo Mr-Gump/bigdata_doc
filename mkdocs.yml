@@ -180,6 +180,8 @@ nav:
     - Hive: 
       - Hive入门: engine/hive/hive_01.md
       - Hive安装: engine/hive/hive_02.md
+      - Hive数据类型: engine/hive/hive_03.md
+      - DDL: engine/hive/hive_04.md
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
