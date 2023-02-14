@@ -62,7 +62,7 @@
 
 ### 4.3.2 ListState-列表状态变量
 
-> :material-warning:不要在 ValueState 中保存 ArrayList，应该使用 ListState
+> :warning:不要在 ValueState 中保存 ArrayList，应该使用 ListState
 
 - `.get()` 方法：返回包含列表状态变量中所有元素的迭代器
 - `.clear()` 方法：清空状态变量
@@ -73,7 +73,7 @@
 
 ### 4.3.3 MapState-字典状态变量
 
-> :material-warning:不要在 ValueState 中保存 HashMap，应该使用 MapState
+> :warning:不要在 ValueState 中保存 HashMap，应该使用 MapState
 
 - `.put(KEY, VALUE)` 方法：添加 KEY、VALUE 键值对
 - `.get(KEY)` 方法：获取 KEY 的 VALUE
@@ -128,7 +128,7 @@
   - 属于窗口的所有事件
   - 定时器：时间戳=窗口结束时间 - 1毫秒（因为是左闭右开区间），方法是 process 函数
 
-> :material-warning:在只使用 ProcessWindowFunction 的情况下，process 方法的迭代器参数包含了属于窗口的所有数据，会对内存造成压力，那么应该怎么去优化呢？使用累加器的思想。
+> :warning:在只使用 ProcessWindowFunction 的情况下，process 方法的迭代器参数包含了属于窗口的所有数据，会对内存造成压力，那么应该怎么去优化呢？使用累加器的思想。
 
 ### 4.4.2 AggregateFunction
 

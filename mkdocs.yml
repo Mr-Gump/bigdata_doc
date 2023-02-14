@@ -109,7 +109,7 @@ extra_javascript:
 
 # Page tree
 nav:
-  - Material for MkDocs: 
+  - Material: 
     - Home: index.md
     - 提示: mkdocs/admonitions.md
     - 按钮: mkdocs/buttons.md
@@ -182,6 +182,10 @@ nav:
       - Hive安装: engine/hive/hive_02.md
       - Hive数据类型: engine/hive/hive_03.md
       - DDL: engine/hive/hive_04.md
+      - DML: engine/hive/hive_05.md
+      - 查询: engine/hive/hive_06.md
+      - 综合案例练习（初级）: engine/hive/hive_07.md
+      - 函数: engine/hive/hive_08.md
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
@@ -220,7 +224,6 @@ nav:
       - HBase优化: db/hbase/hb_05.md
       - 整合Phoenix: db/hbase/hb_06.md
   - 容器化:
-    - 容器化: container/index.md
     - docker: container/docker.md
     - kubernetes: container/k8s.md
   - 项目文档:
