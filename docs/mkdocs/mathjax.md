@@ -3,10 +3,10 @@
 [MathJax] 是一个优雅的可用的在浏览器中展示数学类内容的方式，为包含不同符号数学排版添加支持(例如 [LaTeX], [MathML], [AsciiMath])，并且可以很容易地与
 Material for MkDocs 集成.
 
-  [MathJax]: https://www.mathjax.org/
-  [LaTeX]: https://en.wikibooks.org/wiki/LaTeX/Mathematics
-  [MathML]: https://en.wikipedia.org/wiki/MathML
-  [AsciiMath]: http://asciimath.org/
+[MathJax]: https://www.mathjax.org/
+[LaTeX]: https://en.wikibooks.org/wiki/LaTeX/Mathematics
+[MathML]: https://en.wikipedia.org/wiki/MathML
+[AsciiMath]: http://asciimath.org/
 
 ## 配置
 
@@ -27,7 +27,7 @@ Material for MkDocs 集成.
         processHtmlClass: "arithmatex"
       }
     };
-
+    
     document$.subscribe(() => { // (1)!
       MathJax.typesetPromise()
     })
@@ -39,7 +39,7 @@ Material for MkDocs 集成.
     markdown_extensions:
       - pymdownx.arithmatex:
           generic: true
-
+    
     extra_javascript:
       - javascripts/mathjax.js
       - https://polyfill.io/v3/polyfill.min.js?features=es6
