@@ -189,6 +189,7 @@ nav:
       - 查询: engine/hive/hive_06.md
       - 综合案例练习（初级）: engine/hive/hive_07.md
       - 函数: engine/hive/hive_08.md
+      - 综合案例练习（中级）: engine/hive/hive_09.md
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
