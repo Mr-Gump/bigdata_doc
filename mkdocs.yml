@@ -190,6 +190,12 @@ nav:
       - 综合案例练习（初级）: engine/hive/hive_07.md
       - 函数: engine/hive/hive_08.md
       - 综合案例练习（中级）: engine/hive/hive_09.md
+      - 分区表和分桶表: engine/hive/hive_10.md
+      - 文件格式和压缩: engine/hive/hive_11.md
+      - 企业级调优: engine/hive/hive_12.md
+      - 综合案例练习（高级）: engine/hive/hive_13.md
+      - 常见错误及解决方案: engine/hive/hive_14.md
+
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
