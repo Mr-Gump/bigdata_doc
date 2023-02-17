@@ -1021,10 +1021,8 @@ month  cn  name_list
   <figcaption>Lateral View 定义</figcaption>
 </figure>
 
-
-![image-20230215205949531](https://cos.gump.cloud/uPic/image-20230215205949531.png)
 <figure markdown>
-  ![Image title](https://dummyimage.com/600x400/){ width="300" }
+  ![image-20230215205949531](https://cos.gump.cloud/uPic/image-20230215205949531.png)
   <figcaption>Lateral View 用法</figcaption>
 </figure>
 
