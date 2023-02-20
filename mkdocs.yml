@@ -197,7 +197,6 @@ nav:
       - 企业级调优: engine/hive/hive_12.md
       - 综合案例练习（高级）: engine/hive/hive_13.md
       - 常见错误及解决方案: engine/hive/hive_14.md
-
   - 版本控制工具: 
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
@@ -207,6 +206,9 @@ nav:
     - DataX: sync/datax.md
     - MaxWell: sync/maxwell.md
     - Flume: sync/flume.md
+    - FlinkCDC: 
+    - CDC简介: finkcdc/01.md
+    - FlinkCDC案例实操: flinkcdc/02.md
   - 调度工具:
     - 调度工具: schedule/index.md
     - Dophin Scheduler: schedule/ds.md
