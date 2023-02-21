@@ -178,7 +178,12 @@ nav:
       - 窗口: engine/flink/flink_05.md
       - 逻辑时钟-水位线: engine/flink/flink_06.md
       - 多流合并: engine/flink/flink_07.md
-      - Flink水位线机制: engine/flink/flink_watermark.md
+      - Flink中的状态变量: engine/flink/flink_08.md
+      - Flink的容错机制: engine/flink/flink_09.md
+      - 端到端一致性: engine/flink/flink_10.md
+      - 背压问题: engine/flink/flink_11.md
+      - 有限状态机: engine/flink/flink_12.md
+      - 水位线机制: engine/flink/flink_watermark.md
     - Tez:
       - Tez概述: engine/tez/tez_01.md
       - Hive on Tez部署: engine/tez/tez_02.md
