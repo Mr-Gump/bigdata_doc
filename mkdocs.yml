@@ -201,8 +201,7 @@ nav:
     - 版本控制工具: vcs/index.md
     - Maven: vcs/maven.md
     - Git: vcs/git.md
-  - 数据采集工具: 
-    - 数据采集工具: sync/index.md
+  - 数据同步工具: 
     - DataX: sync/datax.md
     - MaxWell: 
       - Maxwell简介: sync/maxwell/01.md
@@ -211,8 +210,8 @@ nav:
       - Maxwell使用: sync/maxwell/04.md
     - Flume: sync/flume.md
     - FlinkCDC: 
-      - CDC简介: finkcdc/01.md
-      - FlinkCDC案例实操: flinkcdc/02.md
+      - CDC简介: sync/finkcdc/01.md
+      - FlinkCDC案例实操: sync/flinkcdc/02.md
   - 调度工具:
     - 调度工具: schedule/index.md
     - Dophin Scheduler: schedule/ds.md
