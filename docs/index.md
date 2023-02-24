@@ -1,5 +1,11 @@
 # 欢迎访问 y=xsinx 的大数据文档
 
+## 正在更新
+- [] [字节跳动面试](/interview/zjtd/)
+- [] [Hadoop](/hadoop/)
+- [x] [Hive](/hive/)
+
+
 [前往Github仓库](https://github.com/Mr-Gump/bigdata_doc){ .md-button .md-button--primary }
 
 ## 文档结构

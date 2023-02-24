@@ -134,6 +134,7 @@ nav:
   - Hadoop: 
     - Hadoop概述: hadoop/hdp_01.md
     - Hadoop运行环境搭建: hadoop/hdp_02.md
+    - Hadoop运行模式: hadoop/hdp_03.md
     - 常见错误及解决方案: hadoop/hdp_04.md
   - Zookeeper:
     - Zookeeper入门: zookeeper/zk_01.md
