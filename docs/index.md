@@ -4,6 +4,7 @@
 
 ## 文档结构
 
+``` text 
 ├── CNAME
 ├── assets
 │   ├── images
@@ -198,3 +199,4 @@
     ├── zk_01.md
     ├── zk_02.md
     └── zk_03.md
+```
