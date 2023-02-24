@@ -1,9 +1,9 @@
 # 欢迎访问 y=xsinx 的大数据文档
 
 ## 正在更新
-- [] [字节跳动面试](/interview/zjtd/)
-- [] [Hadoop](/hadoop/)
-- [x] [Hive](/hive/)
+- [ ] [字节跳动面试-1](/interview/zjtd/zj_01/)
+- [ ] [Hadoop-运行环境](/hadoop/hdp_03/)
+- [x] [Hive-企业级调优](/hive/hive_12/)
 
 
 [前往Github仓库](https://github.com/Mr-Gump/bigdata_doc){ .md-button .md-button--primary }
