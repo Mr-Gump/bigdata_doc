@@ -132,10 +132,18 @@ nav:
   - Scala: 
     - scala/index.md
   - Hadoop: 
-    - Hadoop概述: hadoop/hdp_01.md
-    - Hadoop运行环境搭建: hadoop/hdp_02.md
-    - Hadoop运行模式: hadoop/hdp_03.md
-    - 常见错误及解决方案: hadoop/hdp_04.md
+    - Hadoop入门:
+      - Hadoop概述: hadoop/hdp_01.md
+      - Hadoop运行环境搭建: hadoop/hdp_02.md
+      - Hadoop运行模式: hadoop/hdp_03.md
+      - 常见错误及解决方案: hadoop/hdp_04.md
+    - HDFS:
+      - HDFS概述: hadoop/hdp_05.md
+      - HDFS的Shell操作: hadoop/hdp_06.md
+      - HDFS的API操作: hadoop/hdp_07.md
+      - HDFS的读写流程: hadoop/hdp_08.md
+      - NameNode和SecondaryNameNode: hadoop/hdp_09.md
+      - DataNode: hadoop/hdp_10.md
   - Zookeeper:
     - Zookeeper入门: zookeeper/zk_01.md
     - Zookeeper安装: zookeeper/zk_02.md
