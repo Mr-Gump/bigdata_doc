@@ -144,6 +144,14 @@ nav:
       - HDFS的读写流程: hadoop/hdp_08.md
       - NameNode和SecondaryNameNode: hadoop/hdp_09.md
       - DataNode: hadoop/hdp_10.md
+    - MapReduce和Yarn:
+      - MapReduce概述: hadoop/hdp_11.md
+      - Hadoop序列化: hadoop/hdp_12.md
+      - MapReduce框架原理: hadoop/hdp_13.md
+      - Hadoop数据压缩: hadoop/hdp_14.md
+      - Yarn资源调度器: hadoop/hdp_15.md
+      - Yarn案例实操: hadoop/hdp_16.md
+      - 常见错误及解决方案: hadoop/hdp_17.md
   - Zookeeper:
     - Zookeeper入门: zookeeper/zk_01.md
     - Zookeeper安装: zookeeper/zk_02.md
