@@ -152,6 +152,14 @@ nav:
       - Yarn资源调度器: hadoop/hdp_15.md
       - Yarn案例实操: hadoop/hdp_16.md
       - 常见错误及解决方案: hadoop/hdp_17.md
+    - Hadoop优化&新特性:
+      - HDFS—多目录: hadoop/hdp_18.md
+      - HDFS—集群扩容及缩容: hadoop/hdp_19.md
+      - HDFS—故障排除: hadoop/hdp_20.md
+      - Hadoop企业优化: hadoop/hdp_21.md
+      - Hadoop3.x新特性: hadoop/hdp_22.md
+    - Hadoop HA高可用:
+      - hadoop/hdp_23.md
   - Zookeeper:
     - Zookeeper入门: zookeeper/zk_01.md
     - Zookeeper安装: zookeeper/zk_02.md

@@ -2,7 +2,7 @@
 
 ## 正在更新
 - [ ] [字节跳动面试-1](/interview/zjtd/zj_01/)
-- [ ] [Hadoop-运行环境](/hadoop/hdp_03/)
+- [x] [Hadoop-运行环境](/hadoop/hdp_03/)
 - [x] [Hive-企业级调优](/hive/hive_12/)
 
 
