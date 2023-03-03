@@ -238,7 +238,9 @@ nav:
       - Maxwell原理: sync/maxwell/02.md
       - Maxwell部署: sync/maxwell/03.md
       - Maxwell使用: sync/maxwell/04.md
-    - Flume: sync/flume.md
+    - Flume: 
+      - Flume概述: sync/flume/fl_01.md
+      - Flume入门: sync/flume/fl_02.md
     - FlinkCDC: 
       - CDC简介: sync/finkcdc/01.md
       - FlinkCDC案例实操: sync/flinkcdc/02.md

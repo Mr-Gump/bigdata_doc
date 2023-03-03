@@ -1,8 +1,8 @@
 # 欢迎访问 y=xsinx 的大数据文档
 
 ## 正在更新
-- [ ] [字节跳动面试-1](/interview/zjtd/zj_01/)
-- [x] [Hadoop-运行环境](/hadoop/hdp_03/)
+- [ ] [字节跳动面试-2](/interview/zjtd/zj_02/)
+- [] [Flume](/sync/flume/fl_02/)
 - [x] [Hive-企业级调优](/hive/hive_12/)
 
 
