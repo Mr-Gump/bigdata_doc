@@ -270,6 +270,7 @@ nav:
       - HBase进阶: db/hbase/hb_04.md
       - HBase优化: db/hbase/hb_05.md
       - 整合Phoenix: db/hbase/hb_06.md
+      - 与Hive的集成: db/hbase/hb_07.md
   - 容器化:
     - docker: container/docker.md
     - kubernetes: container/k8s.md
