@@ -2,7 +2,7 @@
 
 ## 正在更新
 - [ ] [字节跳动面试-2](/interview/zjtd/zj_02/)
-- [] [Flume](/sync/flume/fl_02/)
+- [x] [Flume](/sync/flume/fl_01/)
 - [x] [Hive-企业级调优](/hive/hive_12/)
 
 

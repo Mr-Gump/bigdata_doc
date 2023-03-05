@@ -241,6 +241,8 @@ nav:
     - Flume: 
       - Flume概述: sync/flume/fl_01.md
       - Flume入门: sync/flume/fl_02.md
+      - Flume进阶: sync/flume/fl_03.md
+      - Flume数据流监控: sync/flume/fl_04.md
     - FlinkCDC: 
       - CDC简介: sync/finkcdc/01.md
       - FlinkCDC案例实操: sync/flinkcdc/02.md
