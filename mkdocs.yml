@@ -252,8 +252,12 @@ nav:
       - CDC简介: sync/finkcdc/01.md
       - FlinkCDC案例实操: sync/flinkcdc/02.md
   - 调度工具:
-    - 调度工具: schedule/index.md
-    - Dophin Scheduler: schedule/ds.md
+    - Dophin Scheduler:
+      - DolphinScheduler简介: schedule/ds/01.md
+      - DolphinScheduler部署说明: schedule/ds/02.md
+      - DolphinScheduler集群模式部署: schedule/ds/03.md
+      - DolphinScheduler入门: schedule/ds/04.md
+      - DolphinScheduler进阶: schedule/ds/05.md
   - 数据库:
     - Redis: 
       - NoSQL: db/redis/rd_01.md
