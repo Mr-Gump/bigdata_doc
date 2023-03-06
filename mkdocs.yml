@@ -159,7 +159,7 @@ nav:
       - Hadoop企业优化: hadoop/hdp_21.md
       - Hadoop3.x新特性: hadoop/hdp_22.md
     - Hadoop HA高可用:
-      - hadoop/hdp_23.md
+      - Hadoop高可用: hadoop/hdp_23.md
   - Zookeeper:
     - Zookeeper入门: zookeeper/zk_01.md
     - Zookeeper安装: zookeeper/zk_02.md
@@ -232,7 +232,12 @@ nav:
     - Maven: vcs/maven.md
     - Git: vcs/git.md
   - 数据同步工具: 
-    - DataX: sync/datax.md
+    - DataX: 
+      - DataX简介: sync/datax/01.md
+      - DataX架构原理: sync/datax/02.md
+      - DataX部署: sync/datax/03.md
+      - DataX使用: sync/datax/04.md
+      - DataX优化: sync/datax/05.md
     - MaxWell: 
       - Maxwell简介: sync/maxwell/01.md
       - Maxwell原理: sync/maxwell/02.md
