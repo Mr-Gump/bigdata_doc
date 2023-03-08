@@ -238,7 +238,13 @@ nav:
       - 聚合: vcs/maven/mv_06.md
       - Maven酷站: vcs/maven/mv_07.md
       - Maven生产环境问题解决: vcs/maven/mv_08.md
-    - Git: vcs/git.md
+    - Git: 
+      - Git简介: vcs/git/git_01.md
+      - 基本操作: vcs/git/git_02.md
+      - 分支的操作: vcs/git/git_03.md
+      - 更改提交的操作: vcs/git/git_04.md
+      - 推送至远程仓库: vcs/git/git_05.md
+      - 从远程仓库获取: vcs/git/git_06.md
   - 数据同步工具: 
     - DataX: 
       - DataX简介: sync/datax/01.md
