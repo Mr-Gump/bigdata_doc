@@ -228,7 +228,6 @@ nav:
       - 综合案例练习（高级）: engine/hive/hive_13.md
       - 常见错误及解决方案: engine/hive/hive_14.md
   - 版本控制工具: 
-    - 版本控制工具: vcs/index.md
     - Maven: 
       - 为什么要使用Maven: vcs/maven/mv_01.md
       - Maven是什么?: vcs/maven/mv_02.md
