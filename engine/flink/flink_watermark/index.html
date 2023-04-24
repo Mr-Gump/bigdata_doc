@@ -1,0 +1,5062 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Mr. Gump">
+      
+      
+        <link rel="canonical" href="https://doc.gump.cloud/engine/flink/flink_watermark/">
+      
+      
+        <link rel="prev" href="../flink_12/">
+      
+      
+        <link rel="next" href="../../tez/tez_01/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.7">
+    
+    
+      
+        <title>水位线机制 - 大数据文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ded33207.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/termynal.css">
+    
+      <link rel="stylesheet" href="../../../css/custom.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link rel="stylesheet" href="../../../assets/stylesheets/custom.9097afc2.min.css">
+
+   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#watermark" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://doc.gump.cloud" title="大数据文档" class="md-header__button md-logo" aria-label="大数据文档" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.59 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4m6 14c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V17m0-4.55c-1.3.95-3.58 1.55-6 1.55s-4.7-.6-6-1.55V9.64c1.47.83 3.61 1.36 6 1.36s4.53-.53 6-1.36v2.81M12 9C8.13 9 6 7.5 6 7s2.13-2 6-2 6 1.5 6 2-2.13 2-6 2Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            大数据文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              水位线机制
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Mr-Gump/bigdata_doc" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bigdata_doc
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        Material
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../hadoop/hdp_01/" class="md-tabs__link">
+        Hadoop
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../mq/kafka/kf_01/" class="md-tabs__link">
+        消息队列
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../spark/spark_01/" class="md-tabs__link md-tabs__link--active">
+        计算引擎
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../vcs/maven/mv_01/" class="md-tabs__link">
+        版本控制工具
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../sync/datax/01/" class="md-tabs__link">
+        数据同步工具
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../schedule/ds/01/" class="md-tabs__link">
+        调度工具
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../db/redis/rd_01/" class="md-tabs__link">
+        数据库
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../container/docker/" class="md-tabs__link">
+        容器化
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../project/dataware_01/" class="md-tabs__link">
+        项目文档
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://doc.gump.cloud" title="大数据文档" class="md-nav__button md-logo" aria-label="大数据文档" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.59 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4m6 14c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V17m0-4.55c-1.3.95-3.58 1.55-6 1.55s-4.7-.6-6-1.55V9.64c1.47.83 3.61 1.36 6 1.36s4.53-.53 6-1.36v2.81M12 9C8.13 9 6 7.5 6 7s2.13-2 6-2 6 1.5 6 2-2.13 2-6 2Z"/></svg>
+
+    </a>
+    大数据文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Mr-Gump/bigdata_doc" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bigdata_doc
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../..">Material</a>
+          
+            <label for="__nav_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Material
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/admonitions/" class="md-nav__link">
+        提示
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/buttons/" class="md-nav__link">
+        按钮
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/code-blocks/" class="md-nav__link">
+        代码块
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/content-tabs/" class="md-nav__link">
+        内容标签页
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/data-tables/" class="md-nav__link">
+        数据表格
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/diagrams/" class="md-nav__link">
+        图表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/footnotes/" class="md-nav__link">
+        角注
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/formatting/" class="md-nav__link">
+        格式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/grids/" class="md-nav__link">
+        网格
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/icons-emojis/" class="md-nav__link">
+        图标，表情
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/images/" class="md-nav__link">
+        图像
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/lists/" class="md-nav__link">
+        列表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/tooltips/" class="md-nav__link">
+        工具提示
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/mathjax/" class="md-nav__link">
+        MathJax
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/termynal/" class="md-nav__link">
+        Termynal
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Hadoop
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+          Hadoop入门
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Hadoop入门
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_01/" class="md-nav__link">
+        Hadoop概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_02/" class="md-nav__link">
+        Hadoop运行环境搭建
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_03/" class="md-nav__link">
+        Hadoop运行模式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_04/" class="md-nav__link">
+        常见错误及解决方案
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+          HDFS
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          HDFS
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_05/" class="md-nav__link">
+        HDFS概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_06/" class="md-nav__link">
+        HDFS的Shell操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_07/" class="md-nav__link">
+        HDFS的API操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_08/" class="md-nav__link">
+        HDFS的读写流程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_09/" class="md-nav__link">
+        NameNode和SecondaryNameNode
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_10/" class="md-nav__link">
+        DataNode
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          MapReduce和Yarn
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          MapReduce和Yarn
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_11/" class="md-nav__link">
+        MapReduce概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_12/" class="md-nav__link">
+        Hadoop序列化
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_13/" class="md-nav__link">
+        MapReduce框架原理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_14/" class="md-nav__link">
+        Hadoop数据压缩
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_15/" class="md-nav__link">
+        Yarn资源调度器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_16/" class="md-nav__link">
+        Yarn案例实操
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_17/" class="md-nav__link">
+        常见错误及解决方案
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+          Hadoop优化&新特性
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Hadoop优化&新特性
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_18/" class="md-nav__link">
+        HDFS—多目录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_19/" class="md-nav__link">
+        HDFS—集群扩容及缩容
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_20/" class="md-nav__link">
+        HDFS—故障排除
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_21/" class="md-nav__link">
+        Hadoop企业优化
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_22/" class="md-nav__link">
+        Hadoop3.x新特性
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Hadoop HA高可用
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Hadoop HA高可用
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_23/" class="md-nav__link">
+        Hadoop高可用
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+          Zookeeper
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_6">
+          <span class="md-nav__icon md-icon"></span>
+          Zookeeper
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../zookeeper/zk_01/" class="md-nav__link">
+        Zookeeper入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../zookeeper/zk_02/" class="md-nav__link">
+        Zookeeper安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../zookeeper/zk_03/" class="md-nav__link">
+        Zookeeper实战
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          消息队列
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          消息队列
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+          Kafka
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Kafka
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_01/" class="md-nav__link">
+        Kafka概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_02/" class="md-nav__link">
+        Kafka快速入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_03/" class="md-nav__link">
+        Kafka生产者
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_04/" class="md-nav__link">
+        Kafka Broker工作流程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_05/" class="md-nav__link">
+        Kafka消费者
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          计算引擎
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          计算引擎
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+          Spark
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Spark
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_01/" class="md-nav__link">
+        Spark概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_02/" class="md-nav__link">
+        Spark运行模式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_03/" class="md-nav__link">
+        RDD概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_04/" class="md-nav__link">
+        RDD编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_05/" class="md-nav__link">
+        累加器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_06/" class="md-nav__link">
+        广播变量
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_07/" class="md-nav__link">
+        SparkCore实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_08/" class="md-nav__link">
+        SparkSQL概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_09/" class="md-nav__link">
+        SparkSQL编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_10/" class="md-nav__link">
+        SparkSQL数据的加载与保存
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_11/" class="md-nav__link">
+        SparkSQL项目实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_12/" class="md-nav__link">
+        Spark提交流程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_13/" class="md-nav__link">
+        Spark任务的执行
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_14/" class="md-nav__link">
+        Shuffle
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_15/" class="md-nav__link">
+        Spark内存管理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark/spark_16/" class="md-nav__link">
+        SparkSQL优化
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+          Spark Streaming
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Spark Streaming
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_01/" class="md-nav__link">
+        SparkStreaming概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_02/" class="md-nav__link">
+        HelloWorld
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_03/" class="md-nav__link">
+        DStream转换
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_04/" class="md-nav__link">
+        DStream输出
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_05/" class="md-nav__link">
+        优雅关闭
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+          Flink
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Flink
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_01/" class="md-nav__link">
+        初识 Flink
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_02/" class="md-nav__link">
+        Flink运行时架构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_03/" class="md-nav__link">
+        DataStream API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_04/" class="md-nav__link">
+        底层API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_05/" class="md-nav__link">
+        窗口
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_06/" class="md-nav__link">
+        逻辑时钟-水位线
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_07/" class="md-nav__link">
+        多流合并
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_08/" class="md-nav__link">
+        Flink中的状态变量
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_09/" class="md-nav__link">
+        Flink的容错机制
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_10/" class="md-nav__link">
+        端到端一致性
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_11/" class="md-nav__link">
+        背压问题
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../flink_12/" class="md-nav__link">
+        有限状态机
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          水位线机制
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        水位线机制
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    事件时间和窗口
+  </a>
+  
+    <nav class="md-nav" aria-label="事件时间和窗口">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    什么是水位线
+  </a>
+  
+    <nav class="md-nav" aria-label="什么是水位线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 有序流中的水位线
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 乱序流中的水位线
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 水位线的特性
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#623" class="md-nav__link">
+    6.2.3 如何生成水位线
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2.3 如何生成水位线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    1. 生成水位线的总体原则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-watermark-strategies" class="md-nav__link">
+    2. 水位线生成策略（Watermark Strategies）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-flink" class="md-nav__link">
+    3. Flink 内置水位线生成器
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 自定义水位线策略
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5. 在自定义数据源中发送水位线
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    水位线的传递
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    水位线的总结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+          Tez
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tez
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tez/tez_01/" class="md-nav__link">
+        Tez概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tez/tez_02/" class="md-nav__link">
+        Hive on Tez部署
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+          Hive
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Hive
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_01/" class="md-nav__link">
+        Hive入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_02/" class="md-nav__link">
+        Hive安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_03/" class="md-nav__link">
+        Hive数据类型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_04/" class="md-nav__link">
+        DDL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_05/" class="md-nav__link">
+        DML
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_06/" class="md-nav__link">
+        查询
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_07/" class="md-nav__link">
+        综合案例练习（初级）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_08/" class="md-nav__link">
+        函数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_09/" class="md-nav__link">
+        综合案例练习（中级）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_10/" class="md-nav__link">
+        分区表和分桶表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_11/" class="md-nav__link">
+        文件格式和压缩
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_12/" class="md-nav__link">
+        企业级调优
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_13/" class="md-nav__link">
+        综合案例练习（高级）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_14/" class="md-nav__link">
+        常见错误及解决方案
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          版本控制工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          版本控制工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+          Maven
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Maven
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_01/" class="md-nav__link">
+        为什么要使用Maven
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_02/" class="md-nav__link">
+        Maven是什么?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_03/" class="md-nav__link">
+        Maven如何使用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_04/" class="md-nav__link">
+        Maven核心概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_05/" class="md-nav__link">
+        继承
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_06/" class="md-nav__link">
+        聚合
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_07/" class="md-nav__link">
+        Maven酷站
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_08/" class="md-nav__link">
+        Maven生产环境问题解决
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+          Git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          Git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_01/" class="md-nav__link">
+        Git简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_02/" class="md-nav__link">
+        基本操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_03/" class="md-nav__link">
+        分支的操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_04/" class="md-nav__link">
+        更改提交的操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_05/" class="md-nav__link">
+        推送至远程仓库
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_06/" class="md-nav__link">
+        从远程仓库获取
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          数据同步工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          数据同步工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          DataX
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          DataX
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/01/" class="md-nav__link">
+        DataX简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/02/" class="md-nav__link">
+        DataX架构原理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/03/" class="md-nav__link">
+        DataX部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/04/" class="md-nav__link">
+        DataX使用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/05/" class="md-nav__link">
+        DataX优化
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+          MaxWell
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          MaxWell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/maxwell/01/" class="md-nav__link">
+        Maxwell简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/maxwell/02/" class="md-nav__link">
+        Maxwell原理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/maxwell/03/" class="md-nav__link">
+        Maxwell部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/maxwell/04/" class="md-nav__link">
+        Maxwell使用
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+          Flume
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Flume
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flume/fl_01/" class="md-nav__link">
+        Flume概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flume/fl_02/" class="md-nav__link">
+        Flume入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flume/fl_03/" class="md-nav__link">
+        Flume进阶
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flume/fl_04/" class="md-nav__link">
+        Flume数据流监控
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+          FlinkCDC
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          FlinkCDC
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/finkcdc/01.md" class="md-nav__link">
+        CDC简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flinkcdc/02/" class="md-nav__link">
+        FlinkCDC案例实操
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          调度工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          调度工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+          Dophin Scheduler
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7_1">
+          <span class="md-nav__icon md-icon"></span>
+          Dophin Scheduler
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/01/" class="md-nav__link">
+        DolphinScheduler简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/02/" class="md-nav__link">
+        DolphinScheduler部署说明
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/03/" class="md-nav__link">
+        DolphinScheduler集群模式部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/04/" class="md-nav__link">
+        DolphinScheduler入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/05/" class="md-nav__link">
+        DolphinScheduler进阶
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          数据库
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据库
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+          Redis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          Redis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_01/" class="md-nav__link">
+        NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_02/" class="md-nav__link">
+        Redis简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_03/" class="md-nav__link">
+        Redis安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_04/" class="md-nav__link">
+        Redis的五大数据类型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_05/" class="md-nav__link">
+        Redis的相关配置
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_06/" class="md-nav__link">
+        Jedis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_07/" class="md-nav__link">
+        Redis 持久化
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+          Clickhouse
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Clickhouse
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_01/" class="md-nav__link">
+        ClickHouse入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_02/" class="md-nav__link">
+        ClickHouse安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_03/" class="md-nav__link">
+        数据类型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_04/" class="md-nav__link">
+        表引擎
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_05/" class="md-nav__link">
+        SQL操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_06/" class="md-nav__link">
+        副本
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_07/" class="md-nav__link">
+        分片集群
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_08/" class="md-nav__link">
+        Bitmap
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+          Hbase
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          Hbase
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_01/" class="md-nav__link">
+        HBase简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_02/" class="md-nav__link">
+        HBase快速入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_03/" class="md-nav__link">
+        HBase API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_04/" class="md-nav__link">
+        HBase进阶
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_05/" class="md-nav__link">
+        HBase优化
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_06/" class="md-nav__link">
+        整合Phoenix
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_07/" class="md-nav__link">
+        与Hive的集成
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          容器化
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          容器化
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../container/docker/" class="md-nav__link">
+        docker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../container/k8s/" class="md-nav__link">
+        kubernetes
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          项目文档
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          项目文档
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_10_1" id="__nav_10_1_label" tabindex="0">
+          数据仓库建模理论
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10_1">
+          <span class="md-nav__icon md-icon"></span>
+          数据仓库建模理论
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_01/" class="md-nav__link">
+        数据仓库概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_02/" class="md-nav__link">
+        数据仓库建模概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_03/" class="md-nav__link">
+        维度建模理论之事实表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_04/" class="md-nav__link">
+        维度建模理论之维度表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_05/" class="md-nav__link">
+        数据仓库设计
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    事件时间和窗口
+  </a>
+  
+    <nav class="md-nav" aria-label="事件时间和窗口">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    什么是水位线
+  </a>
+  
+    <nav class="md-nav" aria-label="什么是水位线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 有序流中的水位线
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 乱序流中的水位线
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 水位线的特性
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#623" class="md-nav__link">
+    6.2.3 如何生成水位线
+  </a>
+  
+    <nav class="md-nav" aria-label="6.2.3 如何生成水位线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    1. 生成水位线的总体原则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-watermark-strategies" class="md-nav__link">
+    2. 水位线生成策略（Watermark Strategies）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-flink" class="md-nav__link">
+    3. Flink 内置水位线生成器
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 自定义水位线策略
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5. 在自定义数据源中发送水位线
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    水位线的传递
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    水位线的总结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="watermark">水位线（Watermark）<a class="headerlink" href="#watermark" title="Permanent link">&para;</a></h1>
+<h2 id="_1">事件时间和窗口<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>在实际应用中，一般会采用事件时间语义。而水位线，就是基于事件时间提出的概念。所 以在介绍水位线之前，我们首先来梳理一下事件时间和窗口的关系。</p>
+<p>一个数据产生的时刻，就是流处理中事件触发的时间点，这就是“事件时间”，一般都会以时间戳的形式作为一个字段记录在数据里。这个时间就像商品的“生产日期”一样，一旦产生就是固定的，印在包装袋上，不会因为运输辗转而变化。如果我们想要统计一段时间内的数 据，需要划分时间窗口，这时只要判断一下时间戳就可以知道数据属于哪个窗口了。</p>
+<p>明确了一个数据的所属窗口，还不能直接进行计算。因为窗口处理的是有界数据，我们需要等窗口的数据都到齐了，才能计算出最终的统计结果。那什么时候数据就都到齐了呢？对于时间窗口来说这很明显：到了窗口的结束时间，自然就应该收集到了所有数据，就可以触发计算输出结果了。比如我们想统计 8 点~9 点的用户点击量，那就是从 8 点开始收集数据，到 9 点截止，将收集的数据做处理计算。这有点类似于班车，如图所示，每小时发一班，那么 8 点之后来的人都会上同一班车，到 9 点钟准时发车；9 点之后来的人，就只好等下一班 10 点发的车了。</p>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210194719721.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210194719721" src="https://cos.gump.cloud/uPic/image-20230210194719721.png" /></a>
+  </p>
+<figcaption>车站待发的班车</figcaption>
+</figure>
+<p>当然，我们现在处理的数据本身是有时间戳的。所以为了更清楚地解释，我们将“赶班车”这个例子中的人，换成带着生产日期的商品。所以现在我们班车的主要任务是运送货物，一辆车就只装载 1 小时内生产出的所有商品，货到齐了就发车。比如某辆车要装的是 8 点到 9 点的所有商品，那货什么时候到齐呢？自然可以想到，到 9 点钟的时候商品就到齐了，可以发车了。</p>
+<div class="admonition question">
+<p class="admonition-title">关键问题</p>
+<p>“9 点钟发车”，到底是看谁的表来定时间？</p>
+</div>
+<p>在处理时间语义下，都是以当前任务所在节点的系统时间为准的。这就相当于每辆车里都 挂了一个钟，司机看到到了 9 点就直接发车。这种方式简单粗暴容易实现，但因为车上的钟是 独立运行的，以它为标准就不能准确地判断商品的生产时间。在分布式环境下，这样会因为网 络传输延迟的不确定而导致误差。比如有些商品在 8 点 59 分 59 秒生产出来，可是从下生产线 到运至车上又要花费几秒，那就赶不上 9 点钟这班车了。而且现在分布式系统中有很多辆 9 点发的班车，所以同时生产出的一批商品，需要平均分配到不同班车上，可这些班车距离有近 有远、上面挂的钟有快有慢，这就可能导致有些商品上车了、有些却被漏掉；先后生产出的商 品，到达车上的顺序也可能乱掉：统计结果的正确性受到了影响。</p>
+<p>所以在实际中我们往往需要以事件时间为准。如果考虑事件时间，情况就复杂起来了。现 在不能直接用每辆车上挂的钟（系统时间），又没有统一的时钟，那该怎么确定发车时间呢？</p>
+<p>现在能利用的，就只有商品的生产时间（数据的时间戳）了。我们可以这样思考：一般情 况下，商品生产出来之后，就会立即传送到车上；所以商品到达车上的时间（系统时间）应该稍稍滞后于商品的生产时间（数据时间戳）。如果不考虑传输过程的一点点延迟，我们就可以 直接用商品生产时间来表示当前车上的时间了。如图所示，到达车上的商品，生产时间是 8 点 05 分，那么当前车上的时间就是 8 点 05 分；又来了一个 8 点 10 分生产的商品，现在车 上的时间就是 8 点 10 分。我们直接用数据的时间戳来指示当前的时间进展，窗口的关闭自然 也是以数据的时间戳等于窗口结束时间为准，这就相当于可以不受网络传输延迟的影响了。像 之前所说 8 点 59 分 59 秒生产出来的商品，到车上的时候不管实际时间（系统时间）是几点， 我们就认为当前是 8 点 59 分 59 秒，所以它总是能赶上车的；而 9 点这班车，要等到 9 点整生 产的商品到来，才认为时间到了 9 点，这时才正式发车。这样就可以得到正确的统计结果了。</p>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210194926232.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210194926232" src="https://cos.gump.cloud/uPic/image-20230210194926232.png" /></a>
+  </p>
+<figcaption>事件时间语义下窗口的开启和关闭（窗口时间区间为左闭右开，即包含 8 点不包含 9 点）</figcaption>
+</figure>
+<p>在这个处理过程中，我们其实是基于数据的时间戳，自定义了一个“逻辑时钟”。这个时 钟的时间不会自动流逝；它的时间进展，就是靠着新到数据的时间戳来推动的。这样的好处在 于，计算的过程可以完全不依赖处理时间（系统时间），不论什么时候进行统计处理，得到的 结果都是正确的。比如双十一的时候系统处理压力大，我们可能会把大量数据缓存在 Kafka 中；过了高峰时段之后再读取出来，在几秒之内就可以处理完几个小时甚至几天的数据，而且 依然可以按照数据产生的时间段进行统计，所有窗口都能收集到正确的数据。而一般实时流处 理的场景中，事件时间可以基本与处理时间保持同步，只是略微有一点延迟，同时保证了窗口 计算的正确性。</p>
+<h3 id="_2">什么是水位线<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>在事件时间语义下，我们不依赖系统时间，而是基于数据自带的时间戳去定义了一个时钟， 用来表示当前时间的进展。于是每个并行子任务都会有一个自己的逻辑时钟，它的前进是靠数 据的时间戳来驱动的。</p>
+<p>但在分布式系统中，这种驱动方式又会有一些问题。因为数据本身在处理转换的过程中会 变化，如果遇到窗口聚合这样的操作，其实是要攒一批数据才会输出一个结果，那么下游的数 据就会变少，时间进度的控制就不够精细了。另外，数据向下游任务传递时，一般只能传输给 一个子任务（除广播外），这样其他的并行子任务的时钟就无法推进了。例如一个时间戳为 9 点整的数据到来，当前任务的时钟就已经是 9 点了；处理完当前数据要发送到下游，如果下游 任务是一个窗口计算，并行度为 3，那么接收到这个数据的子任务，时钟也会进展到 9 点，9 点结束的窗口就可以关闭进行计算了；而另外两个并行子任务则时间没有变化，不能进行窗口 计算。</p>
+<p>所以我们应该把时钟也以数据的形式传递出去，告诉下游任务当前时间的进展；而且这个 时钟的传递不会因为窗口聚合之类的运算而停滞。一种简单的想法是，在数据流中加入一个时 钟标记，记录当前的事件时间；这个标记可以直接广播到下游，当下游任务收到这个标记，就 可以更新自己的时钟了。由于类似于水流中用来做标志的记号，在 Flink 中，这种用来衡量事 件时间（Event Time）进展的标记，就被称作“水位线”（Watermark）。</p>
+<p>具体实现上，水位线可以看作一条特殊的数据记录，它是插入到数据流中的一个标记点， 主要内容就是一个时间戳，用来指示当前的事件时间。而它插入流中的位置，就应该是在某个 数据到来之后；这样就可以从这个数据中提取时间戳，作为当前水位线的时间戳了。</p>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210195027701.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210195027701" src="https://cos.gump.cloud/uPic/image-20230210195027701.png" /></a>
+  </p>
+<figcaption>每条数据后插入一个水位线</figcaption>
+</figure>
+<p>如图所示，每个事件产生的数据，都包含了一个时间戳，我们直接用一个整数表示。 这里没有指定单位，可以理解为秒或者毫秒（方便起见，下面讲述统一认为是秒）。当产生于 2 秒的数据到来之后，当前的事件时间就是 2 秒；在后面插入一个时间戳也为 2 秒的水位线， 随着数据一起向下游流动。而当 5 秒产生的数据到来之后，同样在后面插入一个水位线，时间 戳也为 5，当前的时钟就推进到了 5 秒。这样，如果出现下游有多个并行子任务的情形，我们 只要将水位线广播出去，就可以通知到所有下游任务当前的时间进度了。</p>
+<p>水位线就像它的名字所表达的，是数据流中的一部分，随着数据一起流动，在不同任务之 间传输。这看起来非常简单；接下来我们就进一步探讨一些复杂的状况。</p>
+<h4 id="1">1. 有序流中的水位线<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<p>在理想状态下，数据应该按照它们生成的先后顺序、排好队进入流中；也就是说，它们处 理的过程会保持原先的顺序不变，遵守先来后到的原则。这样的话我们从每个数据中提取时间 戳，就可以保证总是从小到大增长的，从而插入的水位线也会不断增长、事件时钟不断向前推 进。</p>
+<p>实际应用中，如果当前数据量非常大，可能会有很多数据的时间戳是相同的，这时每来一 条数据就提取时间戳、插入水位线就做了大量的无用功。而且即使时间戳不同，同时涌来的数 据时间差会非常小（比如几毫秒），往往对处理计算也没什么影响。所以为了提高效率，一般 会每隔一段时间生成一个水位线，这个水位线的时间戳，就是当前最新数据的时间戳，如图所示。所以这时的水位线，其实就是有序流中的一个周期性出现的时间标记。</p>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210195103858.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210195103858" src="https://cos.gump.cloud/uPic/image-20230210195103858.png" /></a>
+  </p>
+<figcaption>有序流中周期性插入水位线</figcaption>
+</figure>
+<p>这里需要注意的是，水位线插入的“周期”，本身也是一个时间概念。在当前事件时间语 义下，假如我们设定了每隔 100ms 生成一次水位线，那就是要等事件时钟推进 100ms 才能插 入；但是事件时钟本身的进展，本身就是靠水位线来表示的——现在要插入一个水位线，可前 提又是水位线要向前推进 100ms，这就陷入了死循环。所以对于水位线的周期性生成，周期时 间是指处理时间（系统时间），而不是事件时间。</p>
+<h4 id="2">2. 乱序流中的水位线<a class="headerlink" href="#2" title="Permanent link">&para;</a></h4>
+<p>有序流的处理非常简单，看起来水位线也并没有起到太大的作用。但这种情况只存在于理 想状态下。我们知道在分布式系统中，数据在节点间传输，会因为网络传输延迟的不确定性， 导致顺序发生改变，这就是所谓的“乱序数据”。</p>
+<p>这里所说的“乱序”（out-of-order），是指数据的先后顺序不一致，主要就是基于数据的产 生时间而言的。如图所示，一个 7 秒时产生的数据，生成时间自然要比 9 秒的数据早；但 是经过数据缓存和传输之后，处理任务可能先收到了 9 秒的数据，之后 7 秒的数据才姗姗来迟。</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>这时如果我们希望插入水位线，来指示当前的事件时间进展，又该怎么做呢？</p>
+</div>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210195150874.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210195150874" src="https://cos.gump.cloud/uPic/image-20230210195150874.png" /></a>
+  </p>
+<figcaption>乱序流</figcaption>
+</figure>
+<p>最直观的想法自然是跟之前一样，我们还是靠数据来驱动，每来一个数据就提取它的时间 戳、插入一个水位线。不过现在的情况是数据乱序，所以有可能新的时间戳比之前的还小，如 果直接将这个时间的水位线再插入，我们的“时钟”就回退了——水位线就代表了时钟，时光 不能倒流，所以水位线的时间戳也不能减小。</p>
+<p>解决思路也很简单：我们插入新的水位线时，要先判断一下时间戳是否比之前的大，否则 就不再生成新的水位线，如图所示。也就是说，只有数据的时间戳比当前时钟大，才能推 动时钟前进，这时才插入水位线。</p>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210195204613.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210195204613" src="https://cos.gump.cloud/uPic/image-20230210195204613.png" /></a>
+  </p>
+<figcaption>乱序流中的水位线</figcaption>
+</figure>
+<p>如果考虑到大量数据同时到来的处理效率，我们同样可以周期性地生成水位线。这时只需 要保存一下之前所有数据中的最大时间戳，需要插入水位线时，就直接以它作为时间戳生成新 的水位线，如图所示。</p>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210195221569.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210195221569" src="https://cos.gump.cloud/uPic/image-20230210195221569.png" /></a>
+  </p>
+<figcaption>乱序流中周期性生成水位线</figcaption>
+</figure>
+<p>这样做尽管可以定义出一个事件时钟，却也会带来一个非常大的问题：我们无法正确处理 “迟到”的数据。在上面的例子中，当 9 秒产生的数据到来之后，我们就直接将时钟推进到了 9 秒；如果有一个窗口结束时间就是 9 秒（比如，要统计 0~9 秒的所有数据），那么这时窗口 就应该关闭、将收集到的所有数据计算输出结果了。但事实上，由于数据是乱序的，还可能有 时间戳为 7 秒、8 秒的数据在 9 秒的数据之后才到来，这就是“迟到数据”（late data）。它们 本来也应该属于 0~9 秒这个窗口，但此时窗口已经关闭，于是这些数据就被遗漏了，这会导 致统计结果不正确。</p>
+<p>如果用之前我们类比班车的例子，现在的状况就是商品不是按照生产时间顺序到来的，所 以有可能出现这种情况：9 点生产的商品已经到了，我们认为已经到了 9 点，所以直接发车； 但是可能还会有 8 点 59 分 59 秒生产的商品迟到了，没有赶上这班车。那怎么解决这个问题呢？</p>
+<p>其实我们有很多生活中的经验。假如是一个团队出去团建，那肯定希望每个人都不能落下； 如果有人因为堵车没能准时到车上，我们可以稍微等一会儿。9 点发车，我们可以等到 9 点 10 分，等人都到齐了再出发。当然，实际应用的网络环境不可能跟北京的交通一样堵，所以不需 要等那么久，或许只要等一两秒钟就可以了。具体在商品班车的例子里，我们可以多等 2 秒钟， 也就是当生产时间为 9 点零 2 秒的商品到达，时钟推进到 9 点零 2 秒，这时就认为所有 8 点到 9 点生产的商品都到齐了，可以正式发车。不过这样相当于更改了发车时间，属于“违规操作”。 为了做到形式上仍然是 9 点发车，我们可以更改一下时钟推进的逻辑：当一个商品到达时，不 要直接用它的生产时间作为当前时间，而是减上两秒，这就相当于把车上的逻辑时钟调慢了。 这样一来，当 9 点生产的商品到达时，我们当前车上的时间是 8 点 59 分 58 秒，还没到发车时 间；当 9 点零 2 秒生产的商品到达时，车上时间刚好是 9 点，这时该到的商品都到齐了，准时 发车就没问题了。</p>
+<p>回到上面的例子，为了让窗口能够正确收集到迟到的数据，我们也可以等上 2 秒；也就是 用当前已有数据的最大时间戳减去 2 秒，就是要插入的水位线的时间戳，如图所示。这 样的话，9 秒的数据到来之后，事件时钟不会直接推进到 9 秒，而是进展到了 7 秒；必须等到 11 秒的数据到来之后，事件时钟才会进展到 9 秒，这时迟到数据也都已收集齐，0~9 秒的窗 口就可以正确计算结果了。</p>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210195245427.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210195245427" src="https://cos.gump.cloud/uPic/image-20230210195245427.png" /></a>
+  </p>
+<figcaption>乱序流中“等 2 秒”策略</figcaption>
+</figure>
+<p>如果仔细观察就会看到，这种“等 2 秒”的策略其实并不能处理所有的乱序数据。比如 22 秒的数据到来之后，插入的水位线时间戳为 20，也就是当前时钟已经推进到了 20 秒；对于 10~20 秒的窗口，这时就该关闭了。但是之后又会有 17 秒的迟到数据到来，它本来应该属于 10~20 秒窗口，现在却被遗漏丢弃了。那又该怎么办呢？</p>
+<p>既然现在等 2 秒还是等不到 17 秒产生的迟到数据，那自然我们可以试着多等几秒，也就 是把时钟调得更慢一些。最终的目的，就是要让窗口能够把所有迟到数据都收进来，得到正确 的计算结果。对应到水位线上，其实就是要保证，当前时间已经进展到了这个时间戳，在这之 后不可能再有迟到数据来了。</p>
+<p>下面是一个示例，我们可以使用周期性的方式生成正确的水位线。</p>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210195303773.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210195303773" src="https://cos.gump.cloud/uPic/image-20230210195303773.png" /></a>
+  </p>
+<figcaption>乱序流中周期性生成正确的水位线</figcaption>
+</figure>
+<p>如图所示，第一个水位线时间戳为 7，它表示当前事件时间是 7 秒，7 秒之前的数据 都已经到齐，之后再也不会有了；同样，第二个、第三个水位线时间戳分别为 12 和 20，表示 11 秒、20 秒之前的数据都已经到齐，如果有对应的窗口就可以直接关闭了，统计的结果一定 是正确的。这里由于水位线是周期性生成的，所以插入的位置不一定是在时间戳最大的数据后 面。</p>
+<p>另外需要注意的是，这里一个窗口所收集的数据，并不是之前所有已经到达的数据。因为数据属于哪个窗口，是由数据本身的时间戳决定的，一个窗口只会收集真正属于它的那些数据。 也就是说，上图中尽管水位线 W(20)之前有时间戳为 22 的数据到来，10~20 秒的窗口中也不会收集这个数据，进行计算依然可以得到正确的结果。关于窗口的原理，我们会在后面继续展开讲解。</p>
+<h4 id="3">3. 水位线的特性<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<p>现在我们可以知道，水位线就代表了当前的事件时间时钟，而且可以在数据的时间戳基础 上加一些延迟来保证不丢数据，这一点对于乱序流的正确处理非常重要。 我们可以总结一下水位线的特性：</p>
+<ul>
+<li>水位线是插入到数据流中的一个标记，可以认为是一个特殊的数据</li>
+<li>水位线主要的内容是一个时间戳，用来表示当前事件时间的进展</li>
+<li>水位线是基于数据的时间戳生成的</li>
+<li>水位线的时间戳必须单调递增，以确保任务的事件时间时钟一直向前推进</li>
+<li>水位线可以通过设置延迟，来保证正确处理乱序数据</li>
+<li>一个水位线 Watermark(t)，表示在当前流中事件时间已经达到了时间戳 t, 这代表 t 之 前的所有数据都到齐了，之后流中不会出现时间戳 t’ ≤ t 的数据</li>
+</ul>
+<p>水位线是 Flink 流处理中保证结果正确性的核心机制，它往往会跟窗口一起配合，完成对 乱序数据的正确处理。关于这部分内容，我们会稍后进一步展开讲解。</p>
+<h3 id="623">6.2.3 如何生成水位线<a class="headerlink" href="#623" title="Permanent link">&para;</a></h3>
+<p>上一节中我们讲到，水位线是用来保证窗口处理结果的正确性的，如果不能正确处理所有 乱序数据，可以尝试调大延迟的时间。那在实际应用中，到底应该怎样生成水位线呢？本节我 们就来讨论这个问题。</p>
+<h4 id="1_1">1. 生成水位线的总体原则<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h4>
+<p>我们知道，完美的水位线是“绝对正确”的，也就是一个水位线一旦出现，就表示这个时 间之前的数据已经全部到齐、之后再也不会出现了。而完美的东西总是可望不可即，我们只能 尽量去保证水位线的正确。如果对结果正确性要求很高、想要让窗口收集到所有数据，我们该 怎么做呢？</p>
+<p>一个字，等。由于网络传输的延迟不确定，为了获取所有迟到数据，我们只能等待更长的 时间。作为筹划全局的程序员，我们当然不会傻傻地一直等下去。那到底等多久呢？这就需要 对相关领域有一定的了解了。比如，如果我们知道当前业务中事件的迟到时间不会超过 5 秒， 那就可以将水位线的时间戳设为当前已有数据的最大时间戳减去 5 秒，相当于设置了 5 秒的延 迟等待。</p>
+<p>更多的情况下，我们或许没那么大把握。毕竟未来是没有人能说得准的，我们怎么能确信 未来不会出现一个超级迟到数据呢？所以另一种做法是，可以单独创建一个 Flink 作业来监控 事件流，建立概率分布或者机器学习模型，学习事件的迟到规律。得到分布规律之后，就可以 选择置信区间来确定延迟，作为水位线的生成策略了。例如，如果得到数据的迟到时间服从 μ=1，σ=1 的正态分布，那么设置水位线延迟为 3 秒，就可以保证至少 97.7%的数据可以正确 处理。</p>
+<p>如果我们希望计算结果能更加准确，那可以将水位线的延迟设置得更高一些，等待的时间 越长，自然也就越不容易漏掉数据。不过这样做的代价是处理的实时性降低了，我们可能为极 少数的迟到数据增加了很多不必要的延迟。</p>
+<p>如果我们希望处理得更快、实时性更强，那么可以将水位线延迟设得低一些。这种情况下， 可能很多迟到数据会在水位线之后才到达，就会导致窗口遗漏数据，计算结果不准确。对于这 些 “漏网之鱼”，Flink 另外提供了窗口处理迟到数据的方法，我们会在后面介绍。当然，如 果我们对准确性完全不考虑、一味地追求处理速度，可以直接使用处理时间语义，这在理论上 可以得到最低的延迟。</p>
+<p>所以 Flink 中的水位线，其实是流处理中对低延迟和结果正确性的一个权衡机制，而且把 控制的权力交给了程序员，我们可以在代码中定义水位线的生成策略。接下来我们就具体了解 一下水位线在代码中的使用。</p>
+<h4 id="2-watermark-strategies">2. 水位线生成策略（Watermark Strategies）<a class="headerlink" href="#2-watermark-strategies" title="Permanent link">&para;</a></h4>
+<p>在 Flink 的 DataStream API 中 ， 有 一 个 单 独 用 于 生 成 水 位 线 的 方 法：.assignTimestampsAndWatermarks()，它主要用来为流中的数据分配时间戳，并生成水位线 来指示事件时间：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">SingleOutputStreamOperator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">assignTimestampsAndWatermarks</span><span class="p">(</span><span class="n">WatermarkStrategy</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">watermarkStrategy</span><span class="p">)</span>
+</code></pre></div>
+<p>具体使用时，直接用 DataStream 调用该方法即可，与普通的 transform 方法完全一样。</p>
+<div class="highlight"><pre><span></span><code><span class="n">DataStream</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">env</span><span class="p">.</span><span class="na">addSource</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ClickSource</span><span class="p">());</span>
+<span class="n">DataStream</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="w"> </span><span class="n">withTimestampsAndWatermarks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stream</span><span class="p">.</span><span class="na">assignTimestampsAndWatermarks</span><span class="p">(</span><span class="o">&lt;</span><span class="n">watermark</span><span class="w"> </span><span class="n">strategy</span><span class="o">&gt;</span><span class="p">);</span>
+</code></pre></div>
+<p>这里读者可能有疑惑：不是说数据里已经有时间戳了吗，为什么这里还要“分配”呢？这是 因为原始的时间戳只是写入日志数据的一个字段，如果不提取出来并明确把它分配给数据， Flink 是无法知道数据真正产生的时间的。当然，有些时候数据源本身就提供了时间戳信息， 比如读取 Kafka 时，我们就可以从 Kafka 数据中直接获取时间戳，而不需要单独提取字段分配了。</p>
+<p>.assignTimestampsAndWatermarks() 方法需要传入一个 WatermarkStrategy 作为参数，这就 是 所 谓 的 “ 水 位 线 生 成 策 略 ” 。 WatermarkStrategy 中 包 含 了 一 个 “ 时 间 戳 分 配 器”TimestampAssigner 和一个“水位线生成器” WatermarkGenerator。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">WatermarkStrategy</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">TimestampAssignerSupplier</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">WatermarkGeneratorSupplier</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="n">TimestampAssigner</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">createTimestampAssigner</span><span class="p">(</span>
+<span class="w">        </span><span class="n">TimestampAssignerSupplier</span><span class="p">.</span><span class="na">Context</span><span class="w"> </span><span class="n">context</span><span class="p">);</span>
+
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="n">WatermarkGenerator</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">createWatermarkGenerator</span><span class="p">(</span>
+<span class="w">        </span><span class="n">WatermarkGeneratorSupplier</span><span class="p">.</span><span class="na">Context</span><span class="w"> </span><span class="n">context</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="3-flink">3. Flink 内置水位线生成器<a class="headerlink" href="#3-flink" title="Permanent link">&para;</a></h4>
+<p>WatermarkStrategy 这个接口是一个生成水位线策略的抽象，让我们可以灵活地实现自己的 需求；但看起来有些复杂，如果想要自己实现应该还是比较麻烦的。好在 Flink 充分考虑到了 我们的痛苦，提供了内置的水位线生成器（WatermarkGenerator），不仅开箱即用简化了编程， 而且也为我们自定义水位线策略提供了模板。</p>
+<p>这两个生成器可以通过调用 WatermarkStrategy 的静态辅助方法来创建。它们都是周期性生成水位线的，分别对应着处理有序流和乱序流的场景。</p>
+<p>（1）有序流</p>
+<p>对于有序流，主要特点就是时间戳单调增长（Monotonously Increasing Timestamps），所以永远不会出现迟到数据的问题。 这是周期性生成水位线的最简单的场景， 直接调用 WatermarkStrategy.forMonotonousTimestamps()方法就可以实现。简单来说，就是直接拿当前最 大的时间戳作为水位线就可以了。</p>
+<div class="highlight"><pre><span></span><code><span class="n">stream</span><span class="p">.</span><span class="na">assignTimestampsAndWatermarks</span><span class="p">(</span><span class="w"> </span><span class="n">WatermarkStrategy</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="n">forMonotonousTimestamps</span><span class="p">().</span><span class="na">withTimestampAssigner</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">SerializableTimestampAssigner</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="p">(){</span>
+
+<span class="nd">@Override</span>
+<span class="kd">public</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">extractTimestamp</span><span class="p">(</span><span class="n">Event</span><span class="w"> </span><span class="n">element</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">recordTimestamp</span><span class="p">){</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">element</span><span class="p">.</span><span class="na">timestamp</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">}));</span>
+</code></pre></div>
+<p>上面代码中我们调用.withTimestampAssigner()方法，将数据中的 timestamp 字段提取出来， 作为时间戳分配给数据元素；然后用内置的有序流水位线生成器构造出了生成策略。这样，提 取出的数据时间戳，就是我们处理计算的事件时间。</p>
+<p>这里需要注意的是，时间戳和水位线的单位，必须都是毫秒。</p>
+<p>（2）乱序流</p>
+<p>由于乱序流中需要等待迟到数据到齐， 所以必须设置一个固定量的延迟时间（ Fixed Amount of Lateness）。这时生成水位线的时间戳，就是当前数据流中最大的时间戳减去延迟的 结果， 相当于把表调慢， 当前时钟会滞后于数据的最大时间戳。 调用 WatermarkStrategy. forBoundedOutOfOrderness()方法就可以实现。这个方法需要传入一个 maxOutOfOrderness 参 数，表示“最大乱序程度”，它表示数据流中乱序数据时间戳的最大差值；如果我们能确定乱序 程度，那么设置对应时间长度的延迟，就可以等到所有的乱序数据了。</p>
+<p>代码示例如下：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.flink.api.common.eventtime.SerializableTimestampAssigner</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.flink.api.common.eventtime.WatermarkStrategy</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.flink.streaming.api.environment.StreamExecutionEnvironment</span><span class="p">;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.time.Duration</span><span class="p">;</span>
+
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">WatermarkTest</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">StreamExecutionEnvironment</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StreamExecutionEnvironment</span><span class="p">.</span><span class="na">getExecutionEnvironment</span><span class="p">();</span>
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="na">setParallelism</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="na">addSource</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ClickSource</span><span class="p">()).</span><span class="na">assignTimestampsAndWatermarks</span><span class="p">(</span><span class="c1">// 针对乱序流插入水位线，延迟时间设置为 5s</span>
+<span class="w">        </span><span class="n">WatermarkStrategy</span><span class="p">.</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="n">forBoundedOutOfOrderness</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofSeconds</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="w">                                                                                        </span><span class="p">.</span><span class="na">withTimestampAssigner</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">SerializableTimestampAssigner</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// 抽取时间戳的逻辑</span>
+<span class="w">                </span><span class="nd">@Override</span>
+<span class="w">                </span><span class="kd">public</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">extractTimestamp</span><span class="p">(</span><span class="n">Event</span><span class="w"> </span><span class="n">element</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">recordTimestamp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="k">return</span><span class="w"> </span><span class="n">element</span><span class="p">.</span><span class="na">timestamp</span><span class="p">;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">})).</span><span class="na">print</span><span class="p">();</span>
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="na">execute</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>上面代码中，我们同样提取了 timestamp 字段作为时间戳，并且以 5 秒的延迟时间创建了 处理乱序流的水位线生成器。</p>
+<p>事实上，有序流的水位线生成器本质上和乱序流是一样的，相当于延迟设为 0 的乱序流水 位线生成器，两者完全等同：</p>
+<div class="highlight"><pre><span></span><code><span class="n">WatermarkStrategy</span><span class="p">.</span><span class="na">forMonotonousTimestamps</span><span class="p">()</span>
+<span class="n">WatermarkStrategy</span><span class="p">.</span><span class="na">forBoundedOutOfOrderness</span><span class="p">(</span><span class="n">Duration</span><span class="p">.</span><span class="na">ofSeconds</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</code></pre></div>
+<p>这里需要注意的是，乱序流中生成的水位线真正的时间戳，其实是 当前最大时间戳 – 延 迟时间 – 1，这里的单位是毫秒。为什么要减 1 毫秒呢？我们可以回想一下水位线的特点：时 间戳为 t 的水位线，表示时间戳≤t 的数据全部到齐，不会再来了。如果考虑有序流，也就是 延迟时间为 0 的情况，那么时间戳为 7 秒的数据到来时，之后其实是还有可能继续来 7 秒的数 据的；所以生成的水位线不是 7 秒，而是 6 秒 999 毫秒，7 秒的数据还可以继续来。这一点可 以在 BoundedOutOfOrdernessWatermarks 的源码中明显地看到：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onPeriodicEmit</span><span class="p">(</span><span class="n">WatermarkOutput</span><span class="w"> </span><span class="n">output</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">output</span><span class="p">.</span><span class="na">emitWatermark</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Watermark</span><span class="p">(</span><span class="n">maxTimestamp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">outOfOrdernessMillis</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="4">4. 自定义水位线策略<a class="headerlink" href="#4" title="Permanent link">&para;</a></h4>
+<p>一般来说，Flink 内置的水位线生成器就可以满足应用需求了。不过有时我们的业务逻辑 可能非常复杂，这时对水位线生成的逻辑也有更高的要求，我们就必须自定义实现水位线策略 WatermarkStrategy 了。</p>
+<p>在 WatermarkStrategy 中，时间戳分配器 TimestampAssigner 都是大同小异的，指定字段提 取时间戳就可以了；而不同策略的关键就在于 WatermarkGenerator 的实现。整体说来，Flink 有两种不同的生成水位线的方式：一种是周期性的（Periodic），另一种是断点式的（Punctuated）。</p>
+<p>还记得 WatermarkGenerator 接口中的两个方法吗？——onEvent()和 onPeriodicEmit()，前 者是在每个事件到来时调用，而后者由框架周期性调用。周期性调用的方法中发出水位线，自 然就是周期性生成水位线；而在事件触发的方法中发出水位线，自然就是断点式生成了。两种 方式的不同就集中体现在这两个方法的实现上。</p>
+<p>（1）周期性水位线生成器（Periodic Generator）</p>
+<p>周期性生成器一般是通过 onEvent()观察判断输入的事件，而在 onPeriodicEmit()里发出水 位线。</p>
+<p>下面是一段自定义周期性生成水位线的代码：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.flink.api.common.eventtime.*</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.flink.streaming.api.environment.StreamExecutionEnvironment</span><span class="p">;</span>
+
+
+<span class="c1">// 自定义水位线的产生</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CustomWatermarkTest</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">StreamExecutionEnvironment</span><span class="w"> </span><span class="n">env</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">StreamExecutionEnvironment</span><span class="p">.</span><span class="na">getExecutionEnvironment</span><span class="p">();</span>
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="na">setParallelism</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="na">addSource</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ClickSource</span><span class="p">())</span>
+<span class="w">           </span><span class="p">.</span><span class="na">assignTimestampsAndWatermarks</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">CustomWatermarkStrategy</span><span class="p">()).</span><span class="na">print</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="na">execute</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CustomWatermarkStrategy</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">WatermarkStrategy</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nd">@Override</span>
+<span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">TimestampAssigner</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">createTimestampAssigner</span><span class="p">(</span>
+<span class="w">            </span><span class="n">TimestampAssignerSupplier</span><span class="p">.</span><span class="na">Context</span><span class="w"> </span><span class="n">context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">SerializableTimestampAssigner</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nd">@Override</span>
+<span class="w">                    </span><span class="kd">public</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="nf">extractTimestamp</span><span class="p">(</span><span class="n">Event</span><span class="w"> </span><span class="n">element</span><span class="p">,</span>
+<span class="w">                        </span><span class="kt">long</span><span class="w"> </span><span class="n">recordTimestamp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="k">return</span><span class="w"> </span><span class="n">element</span><span class="p">.</span><span class="na">timestamp</span><span class="p">;</span><span class="w"> </span><span class="c1">// 告诉程序数据源里的时间戳是哪一个字段</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">};</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="nd">@Override</span>
+<span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="n">WatermarkGenerator</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">createWatermarkGenerator</span><span class="p">(</span>
+<span class="w">            </span><span class="n">WatermarkGeneratorSupplier</span><span class="p">.</span><span class="na">Context</span><span class="w"> </span><span class="n">context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">CustomPeriodicGenerator</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CustomPeriodicGenerator</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">WatermarkGenerator</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">delayTime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5000L</span><span class="p">;</span><span class="w"> </span><span class="c1">// 延迟时间</span>
+<span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="n">Long</span><span class="w"> </span><span class="n">maxTs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Long</span><span class="p">.</span><span class="na">MIN_VALUE</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">delayTime</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1L</span><span class="p">;</span><span class="w"> </span><span class="c1">// 观察到的最大时间戳</span>
+
+<span class="w">        </span><span class="nd">@Override</span>
+<span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onEvent</span><span class="p">(</span><span class="n">Event</span><span class="w"> </span><span class="n">event</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">eventTimestamp</span><span class="p">,</span>
+<span class="w">            </span><span class="n">WatermarkOutput</span><span class="w"> </span><span class="n">output</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// 每来一条数据就调用一次</span>
+<span class="w">            </span><span class="n">maxTs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">max</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">timestamp</span><span class="p">,</span><span class="w"> </span><span class="n">maxTs</span><span class="p">);</span><span class="w"> </span><span class="c1">// 更新最大时间戳</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="nd">@Override</span>
+<span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onPeriodicEmit</span><span class="p">(</span><span class="n">WatermarkOutput</span><span class="w"> </span><span class="n">output</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// 发射水位线，默认 200ms 调用一次</span>
+<span class="w">            </span><span class="n">output</span><span class="p">.</span><span class="na">emitWatermark</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Watermark</span><span class="p">(</span><span class="n">maxTs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">delayTime</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1L</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>我们在 onPeriodicEmit()里调用 output.emitWatermark()，就可以发出水位线了；这个方法 由系统框架周期性地调用，默认 200ms 一次。所以水位线的时间戳是依赖当前已有数据的最 大时间戳的（这里的实现与内置生成器类似，也是减去延迟时间再减 1），但具体什么时候生 成与数据无关。</p>
+<p>（2）断点式水位线生成器（Punctuated Generator）</p>
+<p>断点式生成器会不停地检测 onEvent()中的事件，当发现带有水位线信息的特殊事件时， 就立即发出水位线。一般来说，断点式生成器不会通过 onPeriodicEmit()发出水位线。</p>
+<p>自定义的断点式水位线生成器代码如下：</p>
+<div class="highlight"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CustomPunctuatedGenerator</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">WatermarkGenerator</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onEvent</span><span class="p">(</span><span class="n">Event</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">eventTimestamp</span><span class="p">,</span><span class="w"> </span><span class="n">WatermarkOutput</span><span class="w"> </span><span class="n">output</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 只有在遇到特定的 itemId 时，才发出水位线</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="na">user</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="s">&quot;Mary&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">output</span><span class="p">.</span><span class="na">emitWatermark</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Watermark</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="na">timestamp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onPeriodicEmit</span><span class="p">(</span><span class="n">WatermarkOutput</span><span class="w"> </span><span class="n">output</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 不需要做任何事情，因为我们在 onEvent 方法中发射了水位线</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>我们在 onEvent()中判断当前事件的 user 字段，只有遇到“Mary”这个特殊的值时，才调用 output.emitWatermark()发出水位线。这个过程是完全依靠事件来触发的，所以水位线的生成一 定在某个数据到来之后。</p>
+<h4 id="5">5. 在自定义数据源中发送水位线<a class="headerlink" href="#5" title="Permanent link">&para;</a></h4>
+<p>我们也可以在自定义的数据源中抽取事件时间，然后发送水位线。这里要注意的是，在自 定义数据源中发送了水位线以后，就不能再在程序中使用 assignTimestampsAndWatermarks 方 法 来生 成水 位线 了。 在自 定义 数据 源中 生成 水位 线和 在程 序中 使用 assignTimestampsAndWatermarks 方法生成水位线二者只能取其一。示例程序如下：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.flink.streaming.api.environment.StreamExecutionEnvironment</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.flink.streaming.api.functions.source.SourceFunction</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.apache.flink.streaming.api.watermark.Watermark</span><span class="p">;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Calendar</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Random</span><span class="p">;</span>
+
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">EmitWatermarkInSourceFunction</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">StreamExecutionEnvironment</span><span class="w"> </span><span class="n">env</span>
+<span class="w">             </span><span class="o">=</span><span class="w"> </span><span class="n">StreamExecutionEnvironment</span><span class="p">.</span><span class="na">getExecutionEnvironment</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="na">setParallelism</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="na">addSource</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">ClickSourceWithWatermark</span><span class="p">()).</span><span class="na">print</span><span class="p">();</span>
+
+<span class="w">        </span><span class="n">env</span><span class="p">.</span><span class="na">execute</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// 泛型是数据源中的类型</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ClickSourceWithWatermark</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">SourceFunction</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">private</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+
+<span class="w">        </span><span class="nd">@Override</span>
+<span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">SourceContext</span><span class="o">&lt;</span><span class="n">Event</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sourceContext</span><span class="p">)</span>
+<span class="w">            </span><span class="kd">throws</span><span class="w"> </span><span class="n">Exception</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Random</span><span class="w"> </span><span class="n">random</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Random</span><span class="p">();</span>
+
+<span class="w">            </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">userArr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;Mary&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bob&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Alice&quot;</span><span class="w"> </span><span class="p">};</span>
+
+<span class="w">            </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">urlArr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s">&quot;./home&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;./cart&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;./prod?id=1&quot;</span><span class="w"> </span><span class="p">};</span>
+
+<span class="w">            </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">running</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="kt">long</span><span class="w"> </span><span class="n">currTs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Calendar</span><span class="p">.</span><span class="na">getInstance</span><span class="p">().</span><span class="na">getTimeInMillis</span><span class="p">();</span><span class="w"> </span><span class="c1">// 毫秒时间戳</span>
+
+<span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">userArr</span><span class="o">[</span><span class="n">random</span><span class="p">.</span><span class="na">nextInt</span><span class="p">(</span><span class="n">userArr</span><span class="p">.</span><span class="na">length</span><span class="p">)</span><span class="o">]</span><span class="p">;</span>
+
+<span class="w">                </span><span class="n">String</span><span class="w"> </span><span class="n">url</span>
+<span class="w">                     </span><span class="o">=</span><span class="w"> </span><span class="n">urlArr</span><span class="o">[</span><span class="n">random</span><span class="p">.</span><span class="na">nextInt</span><span class="p">(</span><span class="n">urlArr</span><span class="p">.</span><span class="na">length</span><span class="p">)</span><span class="o">]</span><span class="p">;</span>
+
+<span class="w">                </span><span class="n">Event</span><span class="w"> </span><span class="n">event</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Event</span><span class="p">(</span><span class="n">username</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">currTs</span><span class="p">);</span>
+
+<span class="w">                </span><span class="c1">// 使用 collectWithTimestamp 方法将数据发送出去，并指明数据中的时间戳的字段</span>
+<span class="w">                </span><span class="n">sourceContext</span><span class="p">.</span><span class="na">collectWithTimestamp</span><span class="p">(</span><span class="n">event</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="na">timestamp</span><span class="p">);</span>
+
+<span class="w">                </span><span class="c1">// 发送水位线</span>
+<span class="w">                </span><span class="n">sourceContext</span><span class="p">.</span><span class="na">emitWatermark</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Watermark</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="na">timestamp</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1L</span><span class="p">));</span>
+
+<span class="w">                </span><span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="mi">1000L</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="nd">@Override</span>
+<span class="w">        </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">cancel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>在自定义水位线中生成水位线相比 assignTimestampsAndWatermarks 方法更加灵活，可以 任意的产生周期性的、非周期性的水位线，以及水位线的大小也完全由我们自定义。所以非常 适合用来编写 Flink 的测试程序，测试 Flink 的各种各样的特性。</p>
+<h3 id="_3">水位线的传递<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>我们知道水位线是数据流中插入的一个标记，用来表示事件时间的进展，它会随着数据一 起在任务间传递。如果只是直通式（forward）的传输，那很简单，数据和水位线都是按照本 身的顺序依次传递、依次处理的；一旦水位线到达了算子任务, 那么这个任务就会将它内部的 时钟设为这个水位线的时间戳。</p>
+<p>在这里，“任务的时钟”其实仍然是各自为政的，并没有统一的时钟。实际应用中往往上 下游都有多个并行子任务，为了统一推进事件时间的进展，我们要求上游任务处理完水位线、 时钟改变之后，要把当前的水位线再次发出，广播给所有的下游子任务。这样，后续任务就不 需要依赖原始数据中的时间戳（经过转化处理后，数据可能已经改变了），也可以知道当前事件时间了。</p>
+<div class="admonition question">
+<p class="admonition-title">思考</p>
+<p>可是还有另外一个问题，那就是在“重分区”（redistributing）的传输模式下，一个任务有可能会收到来自不同分区上游子任务的数据。而不同分区的子任务时钟并不同步，所以同一时刻发给下游任务的水位线可能并不相同。这时下游任务又该听谁的呢？</p>
+</div>
+<p>这就要回到水位线定义的本质了：它表示的是“当前时间之前的数据，都已经到齐了”。 这是一种保证，告诉下游任务“只要你接到这个水位线，就代表之后我不会再给你发更早的数 据了，你可以放心做统计计算而不会遗漏数据”。所以如果一个任务收到了来自上游并行任务 的不同的水位线，说明上游各个分区处理得有快有慢，进度各不相同比如上游有两个并行子任 务都发来了水位线，一个是 5 秒，一个是 7 秒；这代表第一个并行任务已经处理完 5 秒之前的 所有数据，而第二个并行任务处理到了 7 秒。那这时自己的时钟怎么确定呢？当然也要以“这 之前的数据全部到齐”为标准。如果我们以较大的水位线 7 秒作为当前时间，那就表示“7 秒 前的数据都已经处理完”，这显然不是事实——第一个上游分区才处理到 5 秒，5~7 秒的数据 还会不停地发来；而如果以最小的水位线 5 秒作为当前时钟就不会有这个问题了，因为确实所 有上游分区都已经处理完，不会再发 5 秒前的数据了。这让我们想到“木桶原理”：所有的上 游并行任务就像围成木桶的一块块木板，它们中最短的那一块，决定了我们桶中的水位。</p>
+<figure>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230210200532885.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230210200532885" src="https://cos.gump.cloud/uPic/image-20230210200532885.png" /></a>
+  </p>
+<figcaption>任务间的水位线传递</figcaption>
+</figure>
+<p>我们可以用一个具体的例子，将水位线在任务间传递的过程完整梳理一遍。如图所 示，当前任务的上游，有四个并行子任务，所以会接收到来自四个分区的水位线；而下游有三 个并行子任务，所以会向三个分区发出水位线。具体过程如下：</p>
+<p>（1）上游并行子任务发来不同的水位线，当前任务会为每一个分区设置一个“分区水位线” （Partition Watermark），这是一个分区时钟；而当前任务自己的时钟，就是所有分区时钟里最 小的那个。</p>
+<p>（2）当有一个新的水位线（第一分区的 4）从上游传来时，当前任务会首先更新对应的分 区时钟；然后再次判断所有分区时钟中的最小值，如果比之前大，说明事件时间有了进展，当 前任务的时钟也就可以更新了。这里要注意，更新后的任务时钟，并不一定是新来的那个分区 水位线，比如这里改变的是第一分区的时钟，但最小的分区时钟是第三分区的 3，于是当前任 务时钟就推进到了 3。当时钟有进展时，当前任务就会将自己的时钟以水位线的形式，广播给 下游所有子任务。</p>
+<p>（3）再次收到新的水位线（第二分区的 7）后，执行同样的处理流程。首先将第二个分区 时钟更新为 7，然后比较所有分区时钟；发现最小值没有变化，那么当前任务的时钟也不变，也不会向下游任务发出水位线。 （4）同样道理，当又一次收到新的水位线（第三分区的 6）之后，第三个分区时钟更新为 6，同时所有分区时钟最小值变成了第一分区的 4，所以当前任务的时钟推进到 4，并发出时间 戳为 4 的水位线，广播到下游各个分区任务。</p>
+<p>水位线在上下游任务之间的传递，非常巧妙地避免了分布式系统中没有统一时钟的问题， 每个任务都以“处理完之前所有数据”为标准来确定自己的时钟，就可以保证窗口处理的结果 总是正确的。对于有多条流合并之后进行处理的场景，水位线传递的规则是类似的。</p>
+<h3 id="_4">水位线的总结<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>水位线在事件时间的世界里面，承担了时钟的角色。也就是说在事件时间的流中，水位线 是唯一的时间尺度。如果想要知道现在几点，就要看水位线的大小。后面讲到的窗口的闭合， 以及定时器的触发都要通过判断水位线的大小来决定是否触发。</p>
+<p>水位线是一种特殊的事件，由程序员通过编程插入的数据流里面，然后跟随数据流向下游 流动。</p>
+<p>水位线的默认计算公式：水位线 = 观察到的最大事件时间 – 最大延迟时间 – 1 毫秒。</p>
+<p>所以这里涉及到一个问题，就是不同的算子看到的水位线的大小可能是不一样的。因为下游的算子可能并未接收到来自上游算子的水位线，导致下游算子的时钟要落后于上游算子的时钟。比如 map-&gt;reduce 这样的操作，如果在 map 中编写了非常耗时间的代码，将会阻塞水位线的向下传播，因为水位线也是数据流中的一个事件，位于水位线前面的数据如果没有处理完毕，那么水位线不可能弯道超车绕过前面的数据向下游传播，也就是说会被前面的数据阻塞。 这样就会影响到下游算子的聚合计算，因为下游算子中无论由窗口聚合还是定时器的操作，都需要水位线才能触发执行。这也就告诉了我们，在编写 Flink 程序时，一定要谨慎的编写每一个算子的计算逻辑，尽量避免大量计算或者是大量的 IO 操作，这样才不会阻塞水位线的向下 传递。</p>
+<p>在数据流开始之前，Flink 会插入一个大小是负无穷大（在 Java 中是-Long.MAX_VALUE） 的水位线，而在数据流结束时，Flink 会插入一个正无穷大(Long.MAX_VALUE)的水位线，保 证所有的窗口闭合以及所有的定时器都被触发。</p>
+<p>对于离线数据集，Flink 也会将其作为流读入，也就是一条数据一条数据的读取。在这种情况下，Flink 对于离线数据集，只会插入两次水位线，也就是在最开始处插入负无穷大的水位线，在结束位置插入一个正无穷大的水位线。因为只需要插入两次水位线，就可以保证计算 的正确，无需在数据流的中间插入水位线了。</p>
+<p>水位线的重要性在于它的逻辑时钟特性，而逻辑时钟这个概念可以说是分布式系统里面最为重要的概念之一了，理解透彻了对理解各种分布式系统非常有帮助。具体可以参考 Leslie Lamport 的论文。</p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../flink_12/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 有限状态机" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                有限状态机
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../tez/tez_01/" class="md-footer__link md-footer__link--next" aria-label="Next: Tez概述" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Tez概述
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 - 2023 Mr. Gump
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Mr-Gump/bigdata_doc" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+  
+      <script src="../../../assets/javascripts/bundle.51198bba.min.js"></script>
+      
+        <script src="../../../js/termynal.js"></script>
+      
+        <script src="../../../js/custom.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  <script src="../../../assets/javascripts/custom.acd37711.min.js"></script>
+
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>

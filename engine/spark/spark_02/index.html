@@ -1,0 +1,5397 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Mr. Gump">
+      
+      
+        <link rel="canonical" href="https://doc.gump.cloud/engine/spark/spark_02/">
+      
+      
+        <link rel="prev" href="../spark_01/">
+      
+      
+        <link rel="next" href="../spark_03/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.7">
+    
+    
+      
+        <title>Spark运行模式 - 大数据文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ded33207.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/termynal.css">
+    
+      <link rel="stylesheet" href="../../../css/custom.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link rel="stylesheet" href="../../../assets/stylesheets/custom.9097afc2.min.css">
+
+   <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+        html.glightbox-open { overflow: initial; height: 100%; }
+        .gslide-title { margin-top: 0px; user-select: text; }
+        .gslide-desc { color: #666; user-select: text; }
+        .gslide-image img { background: white; }
+        
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}
+            </style> <script src="../../../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#2-spark" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://doc.gump.cloud" title="大数据文档" class="md-header__button md-logo" aria-label="大数据文档" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.59 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4m6 14c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V17m0-4.55c-1.3.95-3.58 1.55-6 1.55s-4.7-.6-6-1.55V9.64c1.47.83 3.61 1.36 6 1.36s4.53-.53 6-1.36v2.81M12 9C8.13 9 6 7.5 6 7s2.13-2 6-2 6 1.5 6 2-2.13 2-6 2Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            大数据文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Spark运行模式
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Mr-Gump/bigdata_doc" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bigdata_doc
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        Material
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../hadoop/hdp_01/" class="md-tabs__link">
+        Hadoop
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../mq/kafka/kf_01/" class="md-tabs__link">
+        消息队列
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../spark_01/" class="md-tabs__link md-tabs__link--active">
+        计算引擎
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../vcs/maven/mv_01/" class="md-tabs__link">
+        版本控制工具
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../sync/datax/01/" class="md-tabs__link">
+        数据同步工具
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../schedule/ds/01/" class="md-tabs__link">
+        调度工具
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../db/redis/rd_01/" class="md-tabs__link">
+        数据库
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../container/docker/" class="md-tabs__link">
+        容器化
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../project/dataware_01/" class="md-tabs__link">
+        项目文档
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://doc.gump.cloud" title="大数据文档" class="md-nav__button md-logo" aria-label="大数据文档" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7v10c0 2.21 3.59 4 8 4s8-1.79 8-4V7c0-2.21-3.58-4-8-4m6 14c0 .5-2.13 2-6 2s-6-1.5-6-2v-2.23c1.61.78 3.72 1.23 6 1.23s4.39-.45 6-1.23V17m0-4.55c-1.3.95-3.58 1.55-6 1.55s-4.7-.6-6-1.55V9.64c1.47.83 3.61 1.36 6 1.36s4.53-.53 6-1.36v2.81M12 9C8.13 9 6 7.5 6 7s2.13-2 6-2 6 1.5 6 2-2.13 2-6 2Z"/></svg>
+
+    </a>
+    大数据文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Mr-Gump/bigdata_doc" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bigdata_doc
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../../..">Material</a>
+          
+            <label for="__nav_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Material
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/admonitions/" class="md-nav__link">
+        提示
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/buttons/" class="md-nav__link">
+        按钮
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/code-blocks/" class="md-nav__link">
+        代码块
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/content-tabs/" class="md-nav__link">
+        内容标签页
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/data-tables/" class="md-nav__link">
+        数据表格
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/diagrams/" class="md-nav__link">
+        图表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/footnotes/" class="md-nav__link">
+        角注
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/formatting/" class="md-nav__link">
+        格式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/grids/" class="md-nav__link">
+        网格
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/icons-emojis/" class="md-nav__link">
+        图标，表情
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/images/" class="md-nav__link">
+        图像
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/lists/" class="md-nav__link">
+        列表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/tooltips/" class="md-nav__link">
+        工具提示
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/mathjax/" class="md-nav__link">
+        MathJax
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mkdocs/termynal/" class="md-nav__link">
+        Termynal
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Hadoop
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+          Hadoop入门
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Hadoop入门
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_01/" class="md-nav__link">
+        Hadoop概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_02/" class="md-nav__link">
+        Hadoop运行环境搭建
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_03/" class="md-nav__link">
+        Hadoop运行模式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_04/" class="md-nav__link">
+        常见错误及解决方案
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+          HDFS
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          HDFS
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_05/" class="md-nav__link">
+        HDFS概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_06/" class="md-nav__link">
+        HDFS的Shell操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_07/" class="md-nav__link">
+        HDFS的API操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_08/" class="md-nav__link">
+        HDFS的读写流程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_09/" class="md-nav__link">
+        NameNode和SecondaryNameNode
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_10/" class="md-nav__link">
+        DataNode
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+          MapReduce和Yarn
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          MapReduce和Yarn
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_11/" class="md-nav__link">
+        MapReduce概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_12/" class="md-nav__link">
+        Hadoop序列化
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_13/" class="md-nav__link">
+        MapReduce框架原理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_14/" class="md-nav__link">
+        Hadoop数据压缩
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_15/" class="md-nav__link">
+        Yarn资源调度器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_16/" class="md-nav__link">
+        Yarn案例实操
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_17/" class="md-nav__link">
+        常见错误及解决方案
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+          Hadoop优化&新特性
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Hadoop优化&新特性
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_18/" class="md-nav__link">
+        HDFS—多目录
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_19/" class="md-nav__link">
+        HDFS—集群扩容及缩容
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_20/" class="md-nav__link">
+        HDFS—故障排除
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_21/" class="md-nav__link">
+        Hadoop企业优化
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_22/" class="md-nav__link">
+        Hadoop3.x新特性
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+          Hadoop HA高可用
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_5">
+          <span class="md-nav__icon md-icon"></span>
+          Hadoop HA高可用
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../hadoop/hdp_23/" class="md-nav__link">
+        Hadoop高可用
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+          Zookeeper
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2_6">
+          <span class="md-nav__icon md-icon"></span>
+          Zookeeper
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../zookeeper/zk_01/" class="md-nav__link">
+        Zookeeper入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../zookeeper/zk_02/" class="md-nav__link">
+        Zookeeper安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../zookeeper/zk_03/" class="md-nav__link">
+        Zookeeper实战
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          消息队列
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          消息队列
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
+          Kafka
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Kafka
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_01/" class="md-nav__link">
+        Kafka概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_02/" class="md-nav__link">
+        Kafka快速入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_03/" class="md-nav__link">
+        Kafka生产者
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_04/" class="md-nav__link">
+        Kafka Broker工作流程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../mq/kafka/kf_05/" class="md-nav__link">
+        Kafka消费者
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          计算引擎
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          计算引擎
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+          Spark
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          Spark
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_01/" class="md-nav__link">
+        Spark概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Spark运行模式
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Spark运行模式
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#21-spark" class="md-nav__link">
+    2.1 Spark安装地址
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-local" class="md-nav__link">
+    2.2 Local模式
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Local模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221" class="md-nav__link">
+    2.2.1 安装使用
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222" class="md-nav__link">
+    2.2.2 查看任务运行详情
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-standalone" class="md-nav__link">
+    2.3 Standalone模式
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 Standalone模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231" class="md-nav__link">
+    2.3.1集群角色
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3.1集群角色">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2311-masterworker" class="md-nav__link">
+    2.3.1.1 Master和Worker——集群资源管理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2312-driverexecutor" class="md-nav__link">
+    2.3.1.2 Driver和Executor——任务的管理者
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232" class="md-nav__link">
+    2.3.2 安装使用
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#233" class="md-nav__link">
+    2.3.3 参数说明
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#234" class="md-nav__link">
+    2.3.4 配置历史服务
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#235-ha" class="md-nav__link">
+    2.3.5 配置高可用（HA）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#236" class="md-nav__link">
+    2.3.6 运行流程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-yarn" class="md-nav__link">
+    2.4 Yarn模式（重点）
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 Yarn模式（重点）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#241" class="md-nav__link">
+    2.4.1 安装使用
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#242" class="md-nav__link">
+    2.4.2 配置历史服务
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#243" class="md-nav__link">
+    2.4.3 配置查看历史日志
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#244" class="md-nav__link">
+    2.4.4 运行流程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-mesos" class="md-nav__link">
+    2.5 Mesos模式（了解）
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    2.6 几种模式对比
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27" class="md-nav__link">
+    2.7 端口号总结
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_03/" class="md-nav__link">
+        RDD概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_04/" class="md-nav__link">
+        RDD编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_05/" class="md-nav__link">
+        累加器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_06/" class="md-nav__link">
+        广播变量
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_07/" class="md-nav__link">
+        SparkCore实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_08/" class="md-nav__link">
+        SparkSQL概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_09/" class="md-nav__link">
+        SparkSQL编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_10/" class="md-nav__link">
+        SparkSQL数据的加载与保存
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_11/" class="md-nav__link">
+        SparkSQL项目实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_12/" class="md-nav__link">
+        Spark提交流程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_13/" class="md-nav__link">
+        Spark任务的执行
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_14/" class="md-nav__link">
+        Shuffle
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_15/" class="md-nav__link">
+        Spark内存管理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark_16/" class="md-nav__link">
+        SparkSQL优化
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+          Spark Streaming
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          Spark Streaming
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_01/" class="md-nav__link">
+        SparkStreaming概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_02/" class="md-nav__link">
+        HelloWorld
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_03/" class="md-nav__link">
+        DStream转换
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_04/" class="md-nav__link">
+        DStream输出
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../spark_streaming/ss_05/" class="md-nav__link">
+        优雅关闭
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+          Flink
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Flink
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_01/" class="md-nav__link">
+        初识 Flink
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_02/" class="md-nav__link">
+        Flink运行时架构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_03/" class="md-nav__link">
+        DataStream API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_04/" class="md-nav__link">
+        底层API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_05/" class="md-nav__link">
+        窗口
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_06/" class="md-nav__link">
+        逻辑时钟-水位线
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_07/" class="md-nav__link">
+        多流合并
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_08/" class="md-nav__link">
+        Flink中的状态变量
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_09/" class="md-nav__link">
+        Flink的容错机制
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_10/" class="md-nav__link">
+        端到端一致性
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_11/" class="md-nav__link">
+        背压问题
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_12/" class="md-nav__link">
+        有限状态机
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../flink/flink_watermark/" class="md-nav__link">
+        水位线机制
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+          Tez
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_4">
+          <span class="md-nav__icon md-icon"></span>
+          Tez
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tez/tez_01/" class="md-nav__link">
+        Tez概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tez/tez_02/" class="md-nav__link">
+        Hive on Tez部署
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+          Hive
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4_5">
+          <span class="md-nav__icon md-icon"></span>
+          Hive
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_01/" class="md-nav__link">
+        Hive入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_02/" class="md-nav__link">
+        Hive安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_03/" class="md-nav__link">
+        Hive数据类型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_04/" class="md-nav__link">
+        DDL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_05/" class="md-nav__link">
+        DML
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_06/" class="md-nav__link">
+        查询
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_07/" class="md-nav__link">
+        综合案例练习（初级）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_08/" class="md-nav__link">
+        函数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_09/" class="md-nav__link">
+        综合案例练习（中级）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_10/" class="md-nav__link">
+        分区表和分桶表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_11/" class="md-nav__link">
+        文件格式和压缩
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_12/" class="md-nav__link">
+        企业级调优
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_13/" class="md-nav__link">
+        综合案例练习（高级）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../hive/hive_14/" class="md-nav__link">
+        常见错误及解决方案
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          版本控制工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          版本控制工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+          Maven
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Maven
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_01/" class="md-nav__link">
+        为什么要使用Maven
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_02/" class="md-nav__link">
+        Maven是什么?
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_03/" class="md-nav__link">
+        Maven如何使用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_04/" class="md-nav__link">
+        Maven核心概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_05/" class="md-nav__link">
+        继承
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_06/" class="md-nav__link">
+        聚合
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_07/" class="md-nav__link">
+        Maven酷站
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/maven/mv_08/" class="md-nav__link">
+        Maven生产环境问题解决
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_5_2" id="__nav_5_2_label" tabindex="0">
+          Git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5_2">
+          <span class="md-nav__icon md-icon"></span>
+          Git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_01/" class="md-nav__link">
+        Git简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_02/" class="md-nav__link">
+        基本操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_03/" class="md-nav__link">
+        分支的操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_04/" class="md-nav__link">
+        更改提交的操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_05/" class="md-nav__link">
+        推送至远程仓库
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../vcs/git/git_06/" class="md-nav__link">
+        从远程仓库获取
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          数据同步工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          数据同步工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          DataX
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          DataX
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/01/" class="md-nav__link">
+        DataX简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/02/" class="md-nav__link">
+        DataX架构原理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/03/" class="md-nav__link">
+        DataX部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/04/" class="md-nav__link">
+        DataX使用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/datax/05/" class="md-nav__link">
+        DataX优化
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+          MaxWell
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_2">
+          <span class="md-nav__icon md-icon"></span>
+          MaxWell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/maxwell/01/" class="md-nav__link">
+        Maxwell简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/maxwell/02/" class="md-nav__link">
+        Maxwell原理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/maxwell/03/" class="md-nav__link">
+        Maxwell部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/maxwell/04/" class="md-nav__link">
+        Maxwell使用
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6_3" id="__nav_6_3_label" tabindex="0">
+          Flume
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_3">
+          <span class="md-nav__icon md-icon"></span>
+          Flume
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flume/fl_01/" class="md-nav__link">
+        Flume概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flume/fl_02/" class="md-nav__link">
+        Flume入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flume/fl_03/" class="md-nav__link">
+        Flume进阶
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flume/fl_04/" class="md-nav__link">
+        Flume数据流监控
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_6_4" id="__nav_6_4_label" tabindex="0">
+          FlinkCDC
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_4">
+          <span class="md-nav__icon md-icon"></span>
+          FlinkCDC
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/finkcdc/01.md" class="md-nav__link">
+        CDC简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sync/flinkcdc/02/" class="md-nav__link">
+        FlinkCDC案例实操
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          调度工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          调度工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_7_1" id="__nav_7_1_label" tabindex="0">
+          Dophin Scheduler
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7_1">
+          <span class="md-nav__icon md-icon"></span>
+          Dophin Scheduler
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/01/" class="md-nav__link">
+        DolphinScheduler简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/02/" class="md-nav__link">
+        DolphinScheduler部署说明
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/03/" class="md-nav__link">
+        DolphinScheduler集群模式部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/04/" class="md-nav__link">
+        DolphinScheduler入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../schedule/ds/05/" class="md-nav__link">
+        DolphinScheduler进阶
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          数据库
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据库
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_1" id="__nav_8_1_label" tabindex="0">
+          Redis
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8_1">
+          <span class="md-nav__icon md-icon"></span>
+          Redis
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_01/" class="md-nav__link">
+        NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_02/" class="md-nav__link">
+        Redis简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_03/" class="md-nav__link">
+        Redis安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_04/" class="md-nav__link">
+        Redis的五大数据类型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_05/" class="md-nav__link">
+        Redis的相关配置
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_06/" class="md-nav__link">
+        Jedis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/redis/rd_07/" class="md-nav__link">
+        Redis 持久化
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+          Clickhouse
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8_2">
+          <span class="md-nav__icon md-icon"></span>
+          Clickhouse
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_01/" class="md-nav__link">
+        ClickHouse入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_02/" class="md-nav__link">
+        ClickHouse安装
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_03/" class="md-nav__link">
+        数据类型
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_04/" class="md-nav__link">
+        表引擎
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_05/" class="md-nav__link">
+        SQL操作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_06/" class="md-nav__link">
+        副本
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_07/" class="md-nav__link">
+        分片集群
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/ck/ck_08/" class="md-nav__link">
+        Bitmap
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+          Hbase
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8_3">
+          <span class="md-nav__icon md-icon"></span>
+          Hbase
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_01/" class="md-nav__link">
+        HBase简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_02/" class="md-nav__link">
+        HBase快速入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_03/" class="md-nav__link">
+        HBase API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_04/" class="md-nav__link">
+        HBase进阶
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_05/" class="md-nav__link">
+        HBase优化
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_06/" class="md-nav__link">
+        整合Phoenix
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../db/hbase/hb_07/" class="md-nav__link">
+        与Hive的集成
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          容器化
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          容器化
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../container/docker/" class="md-nav__link">
+        docker
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../container/k8s/" class="md-nav__link">
+        kubernetes
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          项目文档
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          项目文档
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10_1" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_10_1" id="__nav_10_1_label" tabindex="0">
+          数据仓库建模理论
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_10_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10_1">
+          <span class="md-nav__icon md-icon"></span>
+          数据仓库建模理论
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_01/" class="md-nav__link">
+        数据仓库概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_02/" class="md-nav__link">
+        数据仓库建模概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_03/" class="md-nav__link">
+        维度建模理论之事实表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_04/" class="md-nav__link">
+        维度建模理论之维度表
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../project/dataware_05/" class="md-nav__link">
+        数据仓库设计
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#21-spark" class="md-nav__link">
+    2.1 Spark安装地址
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#22-local" class="md-nav__link">
+    2.2 Local模式
+  </a>
+  
+    <nav class="md-nav" aria-label="2.2 Local模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#221" class="md-nav__link">
+    2.2.1 安装使用
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#222" class="md-nav__link">
+    2.2.2 查看任务运行详情
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#23-standalone" class="md-nav__link">
+    2.3 Standalone模式
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3 Standalone模式">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#231" class="md-nav__link">
+    2.3.1集群角色
+  </a>
+  
+    <nav class="md-nav" aria-label="2.3.1集群角色">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2311-masterworker" class="md-nav__link">
+    2.3.1.1 Master和Worker——集群资源管理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2312-driverexecutor" class="md-nav__link">
+    2.3.1.2 Driver和Executor——任务的管理者
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#232" class="md-nav__link">
+    2.3.2 安装使用
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#233" class="md-nav__link">
+    2.3.3 参数说明
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#234" class="md-nav__link">
+    2.3.4 配置历史服务
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#235-ha" class="md-nav__link">
+    2.3.5 配置高可用（HA）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#236" class="md-nav__link">
+    2.3.6 运行流程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#24-yarn" class="md-nav__link">
+    2.4 Yarn模式（重点）
+  </a>
+  
+    <nav class="md-nav" aria-label="2.4 Yarn模式（重点）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#241" class="md-nav__link">
+    2.4.1 安装使用
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#242" class="md-nav__link">
+    2.4.2 配置历史服务
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#243" class="md-nav__link">
+    2.4.3 配置查看历史日志
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#244" class="md-nav__link">
+    2.4.4 运行流程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-mesos" class="md-nav__link">
+    2.5 Mesos模式（了解）
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    2.6 几种模式对比
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#27" class="md-nav__link">
+    2.7 端口号总结
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="2-spark">第2章 Spark运行模式<a class="headerlink" href="#2-spark" title="Permanent link">&para;</a></h1>
+<p>部署 Spark 集群大体上分为两种模式：<ins class="critic">单机模式</ins>与<ins class="critic">集群模式</ins></p>
+<p>大多数分布式框架都支持单机模式，方便开发者调试框架的运行环境。但是在生产环境中，并不会使用单机模式。因此，后续直接按照集群模式部署 Spark 集群。</p>
+<p>下面详细列举了 Spark 目前支持的部署模式:</p>
+<ul>
+<li>Local 模式：在本地部署单个Spark服务</li>
+<li>Standalone 模式：Spark 自带的任务调度模式。（国内常用）</li>
+<li>YARN 模式：Spark 使用 Hadoop 的 YARN 组件进行资源与任务调度。（国内最常用）</li>
+<li>Mesos 模式：Spark 使用 Mesos 平台进行资源与任务的调度。（国内很少用）</li>
+</ul>
+<h2 id="21-spark">2.1 Spark安装地址<a class="headerlink" href="#21-spark" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th align="center">参考资料</th>
+<th>链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">官网地址</td>
+<td><a href="http://spark.apache.org/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1M8 13h8v-2H8v2m9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1 0 1.71-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 5-5 5 5 0 0 0-5-5Z"/></svg></span></a></td>
+</tr>
+<tr>
+<td align="center">文档地址</td>
+<td><a href="https://spark.apache.org/docs/3.3.1/"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1M8 13h8v-2H8v2m9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1 0 1.71-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 5-5 5 5 0 0 0-5-5Z"/></svg></span></a></td>
+</tr>
+<tr>
+<td align="center">下载地址</td>
+<td><a href="https://spark.apache.org/downloads.html"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1M8 13h8v-2H8v2m9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1 0 1.71-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 5-5 5 5 0 0 0-5-5Z"/></svg></span></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="22-local">2.2 Local模式<a class="headerlink" href="#22-local" title="Permanent link">&para;</a></h2>
+<p>Local 模式就是运行在一台计算机上的模式，通常就是用于在本机上练手和测试。</p>
+<h3 id="221">2.2.1 安装使用<a class="headerlink" href="#221" title="Permanent link">&para;</a></h3>
+<p>1）上传并解压 Spark 安装包</p>
+<div class="highlight"><pre><span></span><code>tar<span class="w"> </span>-zxvf<span class="w"> </span>spark-3.1.3-bin-hadoop3.2.tgz<span class="w"> </span>-C<span class="w"> </span>/opt/module/
+mv<span class="w"> </span>spark-3.1.3-bin-hadoop3.2<span class="w"> </span>spark-local
+</code></pre></div>
+<p>2）官方求 PI 案例</p>
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>local<span class="o">[</span><span class="m">2</span><span class="o">]</span><span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div>
+<ul>
+<li>
+<p>--class：表示要执行程序的主类；</p>
+</li>
+<li>
+<p>--master local[2]</p>
+</li>
+<li>
+<ul>
+<li>local: 没有指定线程数，则所有计算都运行在一个线程当中，没有任何并行计算</li>
+</ul>
+</li>
+<li>local[K]:指定使用 K 个 Core 来运行计算，比如 local[2] 就是运行 2 个 Core 来执行</li>
+<li>local[*]：默认模式。自动帮你按照 CPU 最多核来设置线程数。比如 CPU 有 8 核，Spark 帮你自动设置 8 个线程计算。</li>
+<li>spark-examples_2.12-3.1.3.jar：要运行的程序；</li>
+<li>10：要运行程序的输入参数（计算圆周率 π 的次数，计算次数越多，准确率越高）</li>
+</ul>
+<p>3）结果展示</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130203539884.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130203539884" src="https://cos.gump.cloud/uPic/image-20230130203539884.png" /></a></p>
+<h3 id="222">2.2.2 查看任务运行详情<a class="headerlink" href="#222" title="Permanent link">&para;</a></h3>
+<p>1）再次运行求 PI 任务，增加迭代次数</p>
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>local<span class="o">[</span><span class="m">2</span><span class="o">]</span><span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">1000</span>
+</code></pre></div>
+<p>2）在任务运行还没有完成时，可登录 hadoop102:4040 查看程序运行结果</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130203700543.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130203700543" src="https://cos.gump.cloud/uPic/image-20230130203700543.png" /></a></p>
+<h2 id="23-standalone">2.3 Standalone模式<a class="headerlink" href="#23-standalone" title="Permanent link">&para;</a></h2>
+<p>Standalone 模式是 Spark 自带的资源调度引擎，构建一个由 <ins class="critic">Master + Worker</ins> 构成的 Spark 集群，Spark 运行在集群中。
+这个要和 Hadoop 中的 Standalone 区别开来。这里的 Standalone 是指只用 Spark 来搭建一个集群，不需要借助 Hadoop 的 Yarn 和 Mesos 等其他框架。</p>
+<h3 id="231">2.3.1集群角色<a class="headerlink" href="#231" title="Permanent link">&para;</a></h3>
+<h4 id="2311-masterworker">2.3.1.1 Master和Worker——集群资源管理<a class="headerlink" href="#2311-masterworker" title="Permanent link">&para;</a></h4>
+<h4 id="_1"><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130203858648.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130203858648" src="https://cos.gump.cloud/uPic/image-20230130203858648.png" /></a><a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
+<p>Master 和 Worker 是 Spark 的<ins class="critic">守护进程</ins>、<ins class="critic">集群资源管理者</ins>，即 Spark 在特定模式（Standalone）下正常运行必须要有的<mark class="critic">后台常驻进程</mark>。</p>
+<h4 id="2312-driverexecutor">2.3.1.2 Driver和Executor——任务的管理者<a class="headerlink" href="#2312-driverexecutor" title="Permanent link">&para;</a></h4>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130204051903.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130204051903" src="https://cos.gump.cloud/uPic/image-20230130204051903.png" /></a></p>
+<p>Driver 和 Executor 是<ins class="critic">临时程序</ins>，当有具体任务提交到 Spark 集群才会开启的程序。</p>
+<h3 id="232">2.3.2 安装使用<a class="headerlink" href="#232" title="Permanent link">&para;</a></h3>
+<p>1）集群规划</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>hadoop102</th>
+<th>hadoop103</th>
+<th>hadoop104</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spark</td>
+<td><mark class="critic">Master</mark>、Worker</td>
+<td>Worker</td>
+<td>Worker</td>
+</tr>
+</tbody>
+</table>
+<p>2）再解压一份 Spark 安装包，并修改解压后的文件夹名称为 spark-standalone</p>
+<div class="highlight"><pre><span></span><code>tar<span class="w"> </span>-zxvf<span class="w"> </span>spark-3.1.3-bin-hadoop3.2.tgz<span class="w"> </span>-C<span class="w"> </span>/opt/module/
+mv<span class="w"> </span>spark-3.1.3-bin-hadoop3.2<span class="w"> </span>spark-standalone
+</code></pre></div>
+<p>3）进入 Spark 的配置目录 /opt/module/spark-standalone/conf</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>conf
+</code></pre></div>
+<p>4）修改 workers 文件，添加 work 节点：</p>
+<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>workers.template<span class="w"> </span>workers
+vim<span class="w"> </span>workers
+</code></pre></div>
+<div class="highlight"><span class="filename">workers</span><pre><span></span><code>hadoop102
+hadoop103
+hadoop104
+</code></pre></div>
+<p>5）修改 spark-env.sh 文件，添加 master 节点</p>
+<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>spark-env.sh.template<span class="w"> </span>spark-env.sh
+vim<span class="w"> </span>spark-env.sh
+</code></pre></div>
+<div class="highlight"><span class="filename">spark-env.sh</span><pre><span></span><code>SPARK_MASTER_HOST=hadoop102
+SPARK_MASTER_PORT=7077
+</code></pre></div>
+<p>6）分发 spark-standalone 包</p>
+<div class="highlight"><pre><span></span><code>xsync<span class="w"> </span>spark-standalone/
+</code></pre></div>
+<p>7）启动 spark 集群</p>
+<div class="highlight"><pre><span></span><code>sbin/start-all.sh
+</code></pre></div>
+<p>查看三台服务器运行进程（ xcall.sh 是以前数仓项目里面讲的脚本）</p>
+<div class="termy">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>xcall.sh<span class="w"> </span>jps
+<span class="go">================atguigu@hadoop102================</span>
+<span class="go">3238 Worker</span>
+<span class="go">3163 Master</span>
+<span class="go">================atguigu@hadoop103================</span>
+<span class="go">2908 Worker</span>
+<span class="go">================atguigu@hadoop104================</span>
+<span class="go">2978 Worker</span>
+</code></pre></div>
+</div>
+
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>如果遇到 <code>JAVA_HOME not set</code> 异常，可以在 sbin 目录下的 spark-config.sh 文件中加入如下配置。
+<div class="highlight"><span class="filename">spark-config.sh</span><pre><span></span><code>export JAVA_HOME=XXXX
+</code></pre></div></p>
+</div>
+<p>8）网页查看：hadoop102:8080（master web 的端口，相当于 Yarn 的8088端口）</p>
+<p>目前还看不到任何任务的执行信息。</p>
+<p>9）官方求 PI 案例
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>spark://hadoop102:7077<span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div></p>
+<p>参数：--master spark://hadoop102:7077 指定要连接的集群的 master。</p>
+<p>10）结果查看</p>
+<p>页面查看 http://hadoop102:8080/ ，发现执行本次任务，默认采用三台服务器节点的总核数 24 核，每个节点内存 1024 M。
+- 8080：master 的 webUI。
+- 4040：application 的 webUI的端口号。</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130205119430.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130205119430" src="https://cos.gump.cloud/uPic/image-20230130205119430.png" /></a></p>
+<h3 id="233">2.3.3 参数说明<a class="headerlink" href="#233" title="Permanent link">&para;</a></h3>
+<p>1）配置 Executor 可用内存为 2G，使用 CPU 核数为 2 个</p>
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>spark://hadoop102:7077<span class="w"> </span><span class="se">\</span>
+--executor-memory<span class="w"> </span>2G<span class="w"> </span><span class="se">\</span>
+--total-executor-cores<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div>
+<p>2）页面查看 http://hadoop102:8080/</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130205217318.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130205217318" src="https://cos.gump.cloud/uPic/image-20230130205217318.png" /></a></p>
+<p>3）基本语法</p>
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>&lt;main-class&gt;
+--master<span class="w"> </span>&lt;master-url&gt;<span class="w"> </span><span class="se">\</span>
+...<span class="w"> </span><span class="c1"># other options</span>
+&lt;application-jar&gt;<span class="w"> </span><span class="se">\</span>
+<span class="o">[</span>application-arguments<span class="o">]</span>
+</code></pre></div>
+<p>4）参数说明</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th align="center">解释</th>
+<th>可选值举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>--class</td>
+<td align="center">Spark 程序中包含主函数的类</td>
+<td></td>
+</tr>
+<tr>
+<td>--master</td>
+<td align="center">Spark 程序运行的模式</td>
+<td>本地模式：local[*]、spark://hadoop102:7077、Yarn</td>
+</tr>
+<tr>
+<td>--executor-memory 1G</td>
+<td align="center">指定每个 executor 可用内存为 1G</td>
+<td>符合集群内存配置即可，具体情况具体分析。</td>
+</tr>
+<tr>
+<td>--total-executor-cores 2</td>
+<td align="center">指定所有 executor 使用的 cpu 核数为 2 个</td>
+<td></td>
+</tr>
+<tr>
+<td>application-jar</td>
+<td align="center">打包好的应用 jar，包含依赖。这个 URL 在集群中全局可见。 比如 hdfs:// 共享存储系统，如果是 file:// path，那么所有的节点的 path 都包含同样的 jar</td>
+<td></td>
+</tr>
+<tr>
+<td>application-arguments</td>
+<td align="center">传给 main() 方法的参数</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="234">2.3.4 配置历史服务<a class="headerlink" href="#234" title="Permanent link">&para;</a></h3>
+<p>由于 spark 任务停止掉后，hadoop102:4040 页面就看不到历史任务的运行情况，所以开发时都配置历史服务器记录任务运行情况。</p>
+<p>1）修改 spark-default.conf.template 名称</p>
+<div class="highlight"><pre><span></span><code><span class="w"> </span>mv<span class="w"> </span>spark-defaults.conf.template<span class="w"> </span>spark-defaults.conf
+</code></pre></div>
+<p>2）修改 spark-default.conf 文件，配置日志存储路径（写）</p>
+<div class="highlight"><pre><span></span><code>vim<span class="w"> </span>spark-defaults.conf
+</code></pre></div>
+<div class="highlight"><span class="filename">spark-defaults.conf</span><pre><span></span><code>spark.eventLog.enabled          true
+spark.eventLog.dir              hdfs://hadoop102:8020/directory
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>需要启动 Hadoop 集群，HDFS 上的目录需要提前存在。</p>
+<div class="highlight"><pre><span></span><code>sbin/start-dfs.sh
+hadoop<span class="w"> </span>fs<span class="w"> </span>-mkdir<span class="w"> </span>/directory
+</code></pre></div>
+</div>
+<p>3）修改spark-env.sh文件，添加如下配置：
+<div class="highlight"><pre><span></span><code>vim<span class="w"> </span>spark-env.sh
+</code></pre></div></p>
+<div class="highlight"><span class="filename">spark-env.sh</span><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">SPARK_HISTORY_OPTS</span><span class="o">=</span><span class="s2">&quot;</span>
+<span class="s2">-Dspark.history.ui.port=18080 </span>
+<span class="s2">-Dspark.history.fs.logDirectory=hdfs://hadoop102:8020/directory </span>
+<span class="s2">-Dspark.history.retainedApplications=30&quot;</span>
+</code></pre></div>
+<ul>
+<li>参数 1 含义：WEBUI 访问的端口号为 18080</li>
+<li>参数 2 含义：指定历史服务器日志存储路径（读）</li>
+<li>参数 3 含义：指定保存 Application 历史记录的个数，如果超过这个值，旧的应用程序信息将被删除，这个是内存中的应用数，而不是页面上显示的应用数。</li>
+</ul>
+<p>4）分发配置文件
+<div class="highlight"><pre><span></span><code>xsync<span class="w"> </span>spark-defaults.conf<span class="w"> </span>spark-env.sh
+</code></pre></div>
+5）启动历史服务
+<div class="highlight"><pre><span></span><code>sbin/start-history-server.sh
+</code></pre></div></p>
+<p>6）再次执行任务
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>spark://hadoop102:7077<span class="w"> </span><span class="se">\</span>
+--executor-memory<span class="w"> </span>1G<span class="w"> </span><span class="se">\</span>
+--total-executor-cores<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div></p>
+<p>7）查看 Spark 历史服务地址：hadoop102:18080</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130210504237.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130210504237" src="https://cos.gump.cloud/uPic/image-20230130210504237.png" /></a></p>
+<h3 id="235-ha">2.3.5 配置高可用（HA）<a class="headerlink" href="#235-ha" title="Permanent link">&para;</a></h3>
+<p>1）高可用原理</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130210548552.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130210548552" src="https://cos.gump.cloud/uPic/image-20230130210548552.png" /></a></p>
+<p>2）配置高可用</p>
+<p>（0）停止集群</p>
+<div class="highlight"><pre><span></span><code>sbin/stop-all.sh
+</code></pre></div>
+<p>（1）Zookeeper正常安装并启动（基于以前讲的数仓项目脚本）</p>
+<div class="highlight"><pre><span></span><code><span class="w"> </span>zk.sh<span class="w"> </span>start
+</code></pre></div>
+<p>（2）修改spark-env.sh文件添加如下配置：</p>
+<div class="highlight"><span class="filename">spark-env.sh</span><pre><span></span><code><span class="c1">#注释掉如下内容：</span>
+<span class="c1">#SPARK_MASTER_HOST=hadoop102</span>
+<span class="c1">#SPARK_MASTER_PORT=7077</span>
+
+<span class="c1">#添加上如下内容。配置由Zookeeper管理Master，在Zookeeper节点中自动创建/spark目录，用于管理：</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SPARK_DAEMON_JAVA_OPTS</span><span class="o">=</span><span class="s2">&quot;</span>
+<span class="s2">-Dspark.deploy.recoveryMode=ZOOKEEPER </span>
+<span class="s2">-Dspark.deploy.zookeeper.url=hadoop102,hadoop103,hadoop104 </span>
+<span class="s2">-Dspark.deploy.zookeeper.dir=/spark&quot;</span>
+
+<span class="c1">#添加如下代码</span>
+<span class="c1">#Zookeeper3.5的AdminServer默认端口是8080，和Spark的WebUI冲突</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SPARK_MASTER_WEBUI_PORT</span><span class="o">=</span><span class="m">8989</span>
+</code></pre></div>
+<p>（3）分发配置文件</p>
+<div class="highlight"><pre><span></span><code>xsync<span class="w"> </span>spark-env.sh
+</code></pre></div>
+<p>（4）在 hadoop102 上启动全部节点</p>
+<div class="highlight"><pre><span></span><code>sbin/start-all.sh
+</code></pre></div>
+<p>（5）在 hadoop103 上单独启动 master 节点</p>
+<div class="highlight"><pre><span></span><code>sbin/start-master.sh
+</code></pre></div>
+<p>3）高可用测试</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130210824361.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130210824361" src="https://cos.gump.cloud/uPic/image-20230130210824361.png" /></a></p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130210833306.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130210833306" src="https://cos.gump.cloud/uPic/image-20230130210833306.png" /></a></p>
+<p>​   （1）查看 hadoop102 的 master 进程</p>
+<div class="termy">
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>jps
+<span class="go">5506 Worker</span>
+<span class="go">5394 Master</span>
+<span class="go">5731 SparkSubmit</span>
+<span class="go">4869 QuorumPeerMain</span>
+<span class="go">5991 Jps</span>
+<span class="go">5831 CoarseGrainedExecutorBackend</span>
+</code></pre></div>
+</div>
+
+<p>（2）Kill 掉 hadoop102 的 master 进程，页面中观察 http://hadoop103:8080/ 的状态是否切换为 active。</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130211017491.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130211017491" src="https://cos.gump.cloud/uPic/image-20230130211017491.png" /></a></p>
+<div class="highlight"><pre><span></span><code><span class="nb">kill</span><span class="w"> </span>-9<span class="w"> </span><span class="m">5394</span>
+</code></pre></div>
+<p>（3）再启动 hadoop102 的 master 进程</p>
+<div class="highlight"><pre><span></span><code>sbin/start-master.sh
+</code></pre></div>
+<h3 id="236">2.3.6 运行流程<a class="headerlink" href="#236" title="Permanent link">&para;</a></h3>
+<p>Spark 有 standalone-client 和 standalone-cluster 两种模式，主要区别在于：Driver 程序的运行节点。</p>
+<p>1）客户端模式</p>
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>spark://hadoop102:7077,hadoop103:7077<span class="w"> </span><span class="se">\</span>
+--executor-memory<span class="w"> </span>2G<span class="w"> </span><span class="se">\</span>
+--total-executor-cores<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+--deploy-mode<span class="w"> </span>client<span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div>
+<p>--deploy-mode client，表示 Driver 程序运行在本地客户端，<mark class="critic">默认模式</mark>。</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130211233420.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130211233420" src="https://cos.gump.cloud/uPic/image-20230130211233420.png" /></a></p>
+<p>2）集群模式</p>
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>spark://hadoop102:7077,hadoop103:7077<span class="w"> </span><span class="se">\</span>
+--executor-memory<span class="w"> </span>2G<span class="w"> </span><span class="se">\</span>
+--total-executor-cores<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+--deploy-mode<span class="w"> </span>cluster<span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div>
+<p>--deploy-mode cluster，表示 Driver 程序运行在集群。</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130211347259.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130211347259" src="https://cos.gump.cloud/uPic/image-20230130211347259.png" /></a></p>
+<p>​   （1）查看 http://hadoop102:8989/ 页面，点击 Completed Drivers 里面的 Worker。</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130211411340.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130211411340" src="https://cos.gump.cloud/uPic/image-20230130211411340.png" /></a></p>
+<p>（2）跳转到 Spark Worker 页面，点击 Finished Drivers 中 Logs 下面的 stdout。</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130211431892.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130211431892" src="https://cos.gump.cloud/uPic/image-20230130211431892.png" /></a></p>
+<p>（3）最终打印结果如下。</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130211440612.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130211440612" src="https://cos.gump.cloud/uPic/image-20230130211440612.png" /></a></p>
+<div class="admonition info">
+<p class="admonition-title">注意</p>
+<p>在测试 Standalone 模式，cluster 运行流程的时候，阿里云用户访问不到 Worker，因为 Worker 是从 Master 内部跳转的，这是正常的，实际工作中我们不可能通过客户端访问的，这些端口对外都会禁用，需要的时候会通过授权到 Master 访问 Worker</p>
+</div>
+<h2 id="24-yarn">2.4 Yarn模式（重点）<a class="headerlink" href="#24-yarn" title="Permanent link">&para;</a></h2>
+<p>Spark 客户端直接连接 Yarn，不需要额外构建 Spark 集群。</p>
+<h3 id="241">2.4.1 安装使用<a class="headerlink" href="#241" title="Permanent link">&para;</a></h3>
+<p>0）停止 Standalone 模式下的 spark 集群
+<div class="highlight"><pre><span></span><code>sbin/stop-all.sh
+zk.sh<span class="w"> </span>stop
+sbin/stop-master.sh
+</code></pre></div></p>
+<p>1）为了防止和 Standalone 模式冲突，再单独解压一份 spark
+<div class="highlight"><pre><span></span><code>tar<span class="w"> </span>-zxvf<span class="w"> </span>spark-3.1.3-bin-hadoop3.2.tgz<span class="w"> </span>-C<span class="w"> </span>/opt/module/
+</code></pre></div></p>
+<p>2）进入到 /opt/module 目录，修改 spark-3.1.3-bin-hadoop3.2 名称为 spark-yarn
+<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>spark-3.1.3-bin-hadoop3.2/<span class="w"> </span>spark-yarn
+</code></pre></div></p>
+<p>3）修改 hadoop 配置文件 /opt/module/hadoop/etc/hadoop/yarn-site.xml，添加如下内容</p>
+<p><mark class="critic">因为测试环境虚拟机内存较少，防止执行过程进行被意外杀死，做如下配置</mark></p>
+<div class="highlight"><span class="filename">yarn-site.xml</span><pre><span></span><code><span class="cm">&lt;!--是否启动一个线程检查每个任务正使用的物理内存量，如果任务超出分配值，则直接将其杀掉，默认是true --&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+<span class="w">     </span><span class="nt">&lt;name&gt;</span>yarn.nodemanager.pmem-check-enabled<span class="nt">&lt;/name&gt;</span>
+<span class="w">     </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+
+<span class="cm">&lt;!--是否启动一个线程检查每个任务正使用的虚拟内存量，如果任务超出分配值，则直接将其杀掉，默认是true --&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+<span class="w">     </span><span class="nt">&lt;name&gt;</span>yarn.nodemanager.vmem-check-enabled<span class="nt">&lt;/name&gt;</span>
+<span class="w">     </span><span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+<p>4）分发配置文件
+<div class="highlight"><pre><span></span><code>xsync<span class="w"> </span>/opt/module/hadoop/etc/hadoop/yarn-site.xml
+</code></pre></div></p>
+<p>5）修改 /opt/module/spark-yarn/conf/spark-env.sh，添加 YARN_CONF_DIR 配置，保证后续运行任务的路径都变成集群路径
+<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>spark-env.sh.template<span class="w"> </span>spark-env.sh
+</code></pre></div></p>
+<div class="highlight"><span class="filename">spark-env.sh</span><pre><span></span><code><span class="nv">YARN_CONF_DIR</span><span class="o">=</span>/opt/module/hadoop/etc/hadoop
+</code></pre></div>
+<p>6）启动 HDFS 以及 YARN 集群
+<div class="highlight"><pre><span></span><code>sbin/start-dfs.sh
+sbin/start-yarn.sh
+</code></pre></div></p>
+<p>7）执行一个程序
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>yarn<span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div></p>
+<p>参数：--master yarn，表示 Yarn 方式运行；--deploy-mode 表示客户端方式运行程序</p>
+<p>8）查看 hadoop103:8088 页面，点击 History，查看历史页面</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130212056535.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130212056535" src="https://cos.gump.cloud/uPic/image-20230130212056535.png" /></a></p>
+<div class="admonition question">
+<p class="admonition-title">思考</p>
+<p>目前是 Hadoop 的作业运行日志展示，如果想获取 Spark 的作业运行日志，怎么办？ </p>
+</div>
+<h3 id="242">2.4.2 配置历史服务<a class="headerlink" href="#242" title="Permanent link">&para;</a></h3>
+<p>由于是重新解压的 Spark 压缩文件，所以需要针对 Yarn 模式，再次配置一下历史服务器。</p>
+<p>1）修改 spark-default.conf.template 名称
+<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>spark-defaults.conf.template<span class="w"> </span>spark-defaults.conf
+</code></pre></div></p>
+<p>2）修改 spark-defaults.conf 文件，配置日志存储路径（写）
+<div class="highlight"><span class="filename">spark-defaults.conf</span><pre><span></span><code>spark.eventLog.enabled          true
+spark.eventLog.dir               hdfs://hadoop102:8020/directory
+</code></pre></div></p>
+<p>3）修改 spark-env.sh 文件，添加如下配置：
+<div class="highlight"><span class="filename">spark-env.sh</span><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">SPARK_HISTORY_OPTS</span><span class="o">=</span><span class="s2">&quot;</span>
+<span class="s2">-Dspark.history.ui.port=18080 </span>
+<span class="s2">-Dspark.history.fs.logDirectory=hdfs://hadoop102:8020/directory </span>
+<span class="s2">-Dspark.history.retainedApplications=30&quot;</span>
+</code></pre></div></p>
+<ul>
+<li>参数 1 含义：WEBUI 访问的端口号为 18080</li>
+<li>参数 2 含义：指定历史服务器日志存储路径（读）</li>
+<li>参数 3 含义：指定保存 Application 历史记录的个数，如果超过这个值，旧的应用程序信息将被删除，这个是内存中的应用数，而不是页面上显示的应用数。</li>
+</ul>
+<h3 id="243">2.4.3 配置查看历史日志<a class="headerlink" href="#243" title="Permanent link">&para;</a></h3>
+<p>为了能从 Yarn 上关联到 spark 历史服务器，需要配置 spark 历史服务器关联路径。
+目的：点击 yarn（8088）上 spark 任务的 history 按钮，进入的是 spark 历史服务器（18080），而不再是 yarn 历史服务器（19888）。</p>
+<p>1）修改配置文件 /opt/module/spark-yarn/conf/spark-defaults.conf</p>
+<p>添加如下内容：
+<div class="highlight"><span class="filename">spark-defaults.conf</span><pre><span></span><code>spark.yarn.historyServer.address=hadoop102:18080
+spark.history.ui.port=18080
+</code></pre></div></p>
+<p>2）重启 Spark 历史服务</p>
+<div class="highlight"><pre><span></span><code>sbin/stop-history-server.sh<span class="w"> </span>
+sbin/start-history-server.sh<span class="w"> </span>
+</code></pre></div>
+<p>3）提交任务到 Yarn 执行
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>yarn<span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div></p>
+<p>4）Web 页面查看日志：http://hadoop103:8088/cluster</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130212625940.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130212625940" src="https://cos.gump.cloud/uPic/image-20230130212625940.png" /></a></p>
+<p>点击 <code>history</code> 跳转到 http://hadoop102:18080/</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130212629824.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130212629824" src="https://cos.gump.cloud/uPic/image-20230130212629824.png" /></a></p>
+<h3 id="244">2.4.4 运行流程<a class="headerlink" href="#244" title="Permanent link">&para;</a></h3>
+<p>Spark 有 yarn-client 和 yarn-cluster 两种模式，主要区别在于：Driver 程序的运行节点。</p>
+<ul>
+<li>yarn-client：Driver 程序运行在客户端，适用于交互、调试，希望立即看到 app 的输出。</li>
+<li>yarn-cluster：Driver 程序运行在由 ResourceManager 启动的 APPMaster，适用于生产环境。</li>
+</ul>
+<p>1）客户端模式（默认）</p>
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>yarn<span class="w"> </span><span class="se">\</span>
+--deploy-mode<span class="w"> </span>client<span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130212753228.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130212753228" src="https://cos.gump.cloud/uPic/image-20230130212753228.png" /></a></p>
+<p>2）集群模式</p>
+<div class="highlight"><pre><span></span><code>bin/spark-submit<span class="w"> </span><span class="se">\</span>
+--class<span class="w"> </span>org.apache.spark.examples.SparkPi<span class="w"> </span><span class="se">\</span>
+--master<span class="w"> </span>yarn<span class="w"> </span><span class="se">\</span>
+--deploy-mode<span class="w"> </span>cluster<span class="w"> </span><span class="se">\</span>
+./examples/jars/spark-examples_2.12-3.1.3.jar<span class="w"> </span><span class="se">\</span>
+<span class="m">10</span>
+</code></pre></div>
+<p>（1）查看 http://hadoop103:8088/cluster 页面，点击 History 按钮，跳转到历史详情页面</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130212857311.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130212857311" src="https://cos.gump.cloud/uPic/image-20230130212857311.png" /></a></p>
+<p>（2）http://hadoop102:18080 点击 Executors -&gt; 点击 driver 中的 stdout</p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130212919416.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130212919416" src="https://cos.gump.cloud/uPic/image-20230130212919416.png" /></a></p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130212923516.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130212923516" src="https://cos.gump.cloud/uPic/image-20230130212923516.png" /></a></p>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130212930083.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130212930083" src="https://cos.gump.cloud/uPic/image-20230130212930083.png" /></a></p>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>如果在 Yarn 日志端无法查看到具体的日志，则在 yarn-site.xml 中添加如下配置并启动 Yarn 历史服务器</p>
+</div>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130213019903.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130213019903" src="https://cos.gump.cloud/uPic/image-20230130213019903.png" /></a></p>
+<div class="highlight"><span class="filename">yarn-site.xml</span><pre><span></span><code><span class="nt">&lt;property&gt;</span>
+<span class="w">    </span><span class="nt">&lt;name&gt;</span>yarn.log.server.url<span class="nt">&lt;/name&gt;</span>
+<span class="w">    </span><span class="nt">&lt;value&gt;</span>http://hadoop102:19888/jobhistory/logs<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">注意</p>
+<p>hadoop 历史服务器也要启动 mr-jobhistory-daemon.sh start historyserver</p>
+</div>
+<p><a class="glightbox" href="https://cos.gump.cloud/uPic/image-20230130213209264.png" data-type="image" data-width="100%" data-height="auto" data-desc-position="bottom"><img alt="image-20230130213209264" src="https://cos.gump.cloud/uPic/image-20230130213209264.png" /></a></p>
+<h2 id="25-mesos">2.5 Mesos模式（了解）<a class="headerlink" href="#25-mesos" title="Permanent link">&para;</a></h2>
+<p>Spark 客户端直接连接 Mesos；不需要额外构建 Spark 集群。国内应用比较少，更多的是运用 Yarn 调度。</p>
+<h2 id="26">2.6 几种模式对比<a class="headerlink" href="#26" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>Spark安装机器数</th>
+<th>需启动的进程</th>
+<th align="center">所属者</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Local</td>
+<td>1</td>
+<td>无</td>
+<td align="center">Spark</td>
+</tr>
+<tr>
+<td>Standalone</td>
+<td>3</td>
+<td>Master及Worker</td>
+<td align="center">Spark</td>
+</tr>
+<tr>
+<td>Yarn</td>
+<td>1</td>
+<td>Yarn及HDFS</td>
+<td align="center">Hadoop</td>
+</tr>
+</tbody>
+</table>
+<h2 id="27">2.7 端口号总结<a class="headerlink" href="#27" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Spark 查看当前 Spark-shell 运行任务情况端口号：4040</li>
+<li>Spark Master 内部通信服务端口号：7077  （类比于 Yarn 的 8032 端口（ RM 和 NM 的内部通信））</li>
+<li>Spark Standalone 模式 Master Web 端口号：8080（类比于 Hadoop Yarn 任务运行情况查看端口号：8088）</li>
+<li>Spark 历史服务器端口号：18080     （类比于 Hadoop 历史服务器端口号：19888）</li>
+</ol>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../spark_01/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Spark概述" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Spark概述
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../spark_03/" class="md-footer__link md-footer__link--next" aria-label="Next: RDD概述" rel="next">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                RDD概述
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 - 2023 Mr. Gump
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Mr-Gump/bigdata_doc" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.annotate", "content.code.copy", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+  
+      <script src="../../../assets/javascripts/bundle.51198bba.min.js"></script>
+      
+        <script src="../../../js/termynal.js"></script>
+      
+        <script src="../../../js/custom.js"></script>
+      
+        <script src="../../../js/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  <script src="../../../assets/javascripts/custom.acd37711.min.js"></script>
+
+  <script>document$.subscribe(() => {const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});})</script></body>
+</html>
