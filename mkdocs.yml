@@ -129,8 +129,6 @@ nav:
     - 工具提示: mkdocs/tooltips.md
     - MathJax: mkdocs/mathjax.md
     - Termynal: mkdocs/termynal.md
-  - Scala: 
-    - scala/index.md
   - Hadoop: 
     - Hadoop入门:
       - Hadoop概述: hadoop/hdp_01.md
@@ -160,10 +158,10 @@ nav:
       - Hadoop3.x新特性: hadoop/hdp_22.md
     - Hadoop HA高可用:
       - Hadoop高可用: hadoop/hdp_23.md
-  - Zookeeper:
-    - Zookeeper入门: zookeeper/zk_01.md
-    - Zookeeper安装: zookeeper/zk_02.md
-    - Zookeeper实战: zookeeper/zk_03.md
+    - Zookeeper:
+      - Zookeeper入门: zookeeper/zk_01.md
+      - Zookeeper安装: zookeeper/zk_02.md
+      - Zookeeper实战: zookeeper/zk_03.md
   - 消息队列: 
     - Kafka:
       - Kafka概述: mq/kafka/kf_01.md
@@ -307,7 +305,3 @@ nav:
       - 维度建模理论之事实表: project/dataware_03.md
       - 维度建模理论之维度表: project/dataware_04.md
       - 数据仓库设计: project/dataware_05.md
-  - 面试:
-    - 字节跳动:
-      - 面一: interview/zjtd/zj_01.md
-      - 面二: interview/zjtd/zj_02.md
